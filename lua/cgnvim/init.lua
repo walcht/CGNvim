@@ -23,9 +23,11 @@ require("lazy").setup({
   spec = {
     { import = "cgnvim.plugins" },
   },
-  install = { colorscheme = { "tokyonight" } },
+  install = { colorscheme = { "material-deep-ocean" } },
   checker = { enabled = false },
 })
+
+vim.cmd "colorscheme material-deep-ocean"
 
 if vim.loader then vim.loader.enable() end
 for _, source in ipairs {

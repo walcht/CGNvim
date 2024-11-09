@@ -49,8 +49,34 @@ M.setup = function()
   -----------------------------------------------------------------------------
   ----------------------------------- CMAKE -----------------------------------
   -----------------------------------------------------------------------------
-  lspconfig.cmake.setup { }
+  lspconfig.cmake.setup {}
 
+
+  -----------------------------------------------------------------------------
+  ------------------------------- Omnisharp (C#) ------------------------------
+  -----------------------------------------------------------------------------
+  lspconfig.omnisharp.setup {
+    capabilities = capabilities,
+    -- handlers = {
+    --     ["textDocument/definition"] = require('omnisharp_extended').handler,
+    -- },
+    cmd = {
+      "omnisharp",
+      '--languageserver',
+      '--hostPID',
+      tostring(vim.fn.getpid())
+    },
+    settings = {
+      FormattingOptions = {
+        EnableEditorConfigSupport = true,
+      },
+      RoslynExtensionsOptions = {
+        EnableAnalyzersSupport = false,
+        EnableImportCompletion = false,
+        EnableDecompilationSupport = true,
+      },
+    }
+  }
 end
 
 

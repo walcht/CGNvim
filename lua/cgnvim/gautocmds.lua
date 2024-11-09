@@ -57,3 +57,21 @@ vim.api.nvim_create_autocmd({ "LspAttach" }, {
     end, { noremap = false, desc = "Toggle LSP" })
   end
 })
+
+-------------------------------------------------------------------------------
+--------------------------------- ToggleTerm ----------------------------------
+-------------------------------------------------------------------------------
+
+vim.api.nvim_create_autocmd({ "TermOpen" }, {
+  callback = function()
+    local opts = { buffer = 0 }
+    local m = vim.keymap.set
+    m('t', '<esc>', [[<C-\><C-n>]], opts)
+    m('t', 'jk', [[<C-\><C-n>]], opts)
+    m('t', '<C-h>', [[<Cmd>wincmd h<CR>]], opts)
+    m('t', '<C-j>', [[<Cmd>wincmd j<CR>]], opts)
+    m('t', '<C-k>', [[<Cmd>wincmd k<CR>]], opts)
+    m('t', '<C-l>', [[<Cmd>wincmd l<CR>]], opts)
+    m('t', '<C-w>', [[<C-\><C-n><C-w>]], opts)
+  end
+})

@@ -6,7 +6,6 @@ local options = {
     "lua_ls",
     "bashls",
     "cmake",
-    "protols",
   }
 }
 

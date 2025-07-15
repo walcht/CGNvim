@@ -2,7 +2,7 @@ return {
   plugins = {
     -- "dap",
     -- "gitsigns",
-    -- "indent-blankline",
+    "indent-blankline",
     "nvim-cmp",
     -- "nvim-navic",
     "nvim-tree",

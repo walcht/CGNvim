@@ -9,7 +9,6 @@ M.setup = function()
   -----------------------------------------------------------------------------
   ------------------------------- lua_ls (lua) --------------------------------
   -----------------------------------------------------------------------------
-
   lspconfig.lua_ls.setup {
     capabilities = capabilities,
     on_init = function(client)
@@ -42,7 +41,6 @@ M.setup = function()
   -----------------------------------------------------------------------------
   ------------------------------- clangd (C++) --------------------------------
   -----------------------------------------------------------------------------
-
   lspconfig.clangd.setup {
     capabilities = capabilities,
     cmd = { "clangd" }
@@ -88,13 +86,30 @@ M.setup = function()
   }
 
   -----------------------------------------------------------------------------
-  ---------------------------- protols (proto3) -------------------------------
+  ------------------------------- Omnisharp (C#) ------------------------------
   -----------------------------------------------------------------------------
 
-  lspconfig.protols.setup {
+  lspconfig.omnisharp.setup {
     capabilities = capabilities,
-    cmd = { "protols" },
-    filetypes = { "proto" },
+    -- handlers = {
+    --     ["textDocument/definition"] = require('omnisharp_extended').handler,
+    -- },
+    cmd = {
+      "omnisharp",
+      '--languageserver',
+      '--hostPID',
+      tostring(vim.fn.getpid())
+    },
+    settings = {
+      FormattingOptions = {
+        EnableEditorConfigSupport = true,
+      },
+      RoslynExtensionsOptions = {
+        EnableAnalyzersSupport = false,
+        EnableImportCompletion = false,
+        EnableDecompilationSupport = true,
+      },
+    }
   }
 end
 

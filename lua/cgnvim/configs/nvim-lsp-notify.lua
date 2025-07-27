@@ -1,3 +1,0 @@
-return {
-  notify = require("notify")
-}

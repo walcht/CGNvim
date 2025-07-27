@@ -100,7 +100,7 @@ return {
   cmd = {
     "dotnet",
     "/opt/linux-x64/Microsoft.CodeAnalysis.LanguageServer.dll",
-    "--logLevel=Information",
+    "--logLevel=Error",  -- Critical|Debug|Error|Information|None|Trace|Warning
     "--extensionLogDirectory=" .. vim.fs.dirname(vim.lsp.get_log_path()),
     "--stdio",
   },
@@ -125,6 +125,8 @@ return {
 
       if root_dir then
         cb(root_dir)
+      else
+        print("[C# LSP] failed to find root directory - LSP support is disabled")
       end
     end
   end,
@@ -142,10 +144,16 @@ return {
       end
 
       -- if no solution is found load project
+      local project_found = false
       for entry, type in fs.dir(root_dir) do
         if type == 'file' and vim.endswith(entry, '.csproj') then
           on_init_project(client, { fs.joinpath(root_dir, entry) })
+          project_found = true
         end
+      end
+
+      if not project_found then
+        print("[C# LSP] no solution/.csproj files were found")
       end
     end,
   },

@@ -37,6 +37,7 @@ For integration with the Unity game engine see this detailed guide:
 
 ## Project Structure
 
+```
 .
 ├── init.lua                    --> loads the config: require("cgnvim")
 ├── LICENSE.txt
@@ -62,7 +63,7 @@ For integration with the Unity game engine see this detailed guide:
 │           └── trouble.lua
 ├── README.md
 └── stylua.toml                 --> for lua formatting using StyLua
-
+```
 
 ```lua/cgnvim/plugins/``` and ```lua/cgnvim/configs/``` have a one-to-one
 association where each file in ```lua/cgnvim/plugins/``` denotes a plugin name
@@ -82,23 +83,23 @@ tries to simplify the memorization of keymaps by relying on mnemonics.
 The main keymaps that contribute the most at simplifying the usual workflow are
 (`<leader>` is `<Space>` unless you have changed the default configuration):
 
-| Keymap        | Short Description                 | Detailed Description                                                      |
-| ------------- | --------------------------------- | ------------------------------------------------------------------------- |
-| `<leader>tt`  | (t)oggle (t)erminal               | toggle the integrated terminal                                            |
-| `<leader>ex`  | toggle file (ex)plorer            | toggle the NvimTree file explorer                                         |
-| `<leader>rs`  | (r)ename (s)ymbol                 | rename symbol under the cursor and all of its references using LSP        |
-| `<leader>rw`  | (r)ename (w)ord                   | rename all occurences of the word under the cursor in current buffer      |
-| `<leader>ts`  | (t)oggle (s)pell                  | toggle spell checking for current buffer                                  |
-| `<leader>ss`  | (s)pell (s)uggest                 | show Telescope's spell suggestion for the word under the cursor           |
-| `<leader>tr`  | (t)oggle (r)elative line numbering| toggle relative line numbering (default: off)                             |
-| `<leader>tih` | (t)oggle (i)nlay (h)ints          | toggle LSP inlay hints. E.g., uses virtual text to show parameter names)  |
-| `<leader>tvt` | (t)oggle (v)irtual (t)ext diagnostics | toggle LSP virtual text diagnostics. Shows diagnostics at the right of the corresponding line using virtual text|
-| `<leader>tvl` | (t)oggle (v)irtual (l)ines diagnostics | toggle virtual lines diagnostics. Uses multiple virtual lines under the corresponding line to show diagnostics. Better than virtual text diagnostics but consumes more visual space (i.e., add a lot of lines on hover). |
-| `K`           | show LSP (K)ownledge              | hover information about symbol under cursor using LSP                     |
-| `KK`          | (K)indly jump to LSP (K)ownledge window | jumps to LSP hover information window about symbol under cursor     |
-| `<leader>bd`  | (b)uffer (d)iagnostics            | toggle Trouble's buffer (local) diagnostics window                        |
-| `<leader>gd`  | (g)lobal (d)iagnostics            | toggle Trouble's global diagnostics window                                |
-| `<leader>ql`  | (q)uickfix (l)ist                 | toggle Trouble's quickfix list window |
+| Keymap        | Short Description                          | Detailed Description                                                                                                                                                                                                          |
+| ------------- | ------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `<leader>tt`  | (t)oggle (t)erminal                        | toggle the integrated terminal                                                                                                                                                                                                |
+| `<leader>ex`  | toggle file (ex)plorer                     | toggle the NvimTree file explorer                                                                                                                                                                                             |
+| `<leader>rs`  | (r)ename (s)ymbol                          | rename symbol under the cursor and all of its references using LSP                                                                                                                                                            |
+| `<leader>rw`  | (r)ename (w)ord                            | rename all occurences of the word under the cursor in current buffer                                                                                                                                                          |    
+| `<leader>ts`  | (t)oggle (s)pell                           | toggle spell checking for current buffer                                                                                                                                                                                      |    
+| `<leader>ss`  | (s)pell (s)uggest                          | show Telescope's spell suggestion for the word under the cursor                                                                                                                                                               |
+| `<leader>tr`  | (t)oggle (r)elative line numbering         | toggle relative line numbering (default: off)                                                                                                                                                                                 |
+| `<leader>tih` | (t)oggle (i)nlay (h)ints                   | toggle LSP inlay hints. E.g., uses virtual text to show parameter names)                                                                                                                                                      |
+| `<leader>tvt` | (t)oggle (v)irtual (t)ext diagnostics      | toggle LSP virtual text diagnostics. Shows diagnostics at the right of the corresponding line using virtual text                                                                                                              |
+| `<leader>tvl` | (t)oggle (v)irtual (l)ines diagnostics     | toggle virtual lines diagnostics. Uses multiple virtual lines under the corresponding line to show diagnostics. Better than virtual text diagnostics but consumes more visual space (i.e., adds a lot of lines on hover).     |
+| `K`           | show LSP (K)ownledge                       | LSP hover information about symbol under cursor                                                                                                                                                                               |
+| `KK`          | (K)indly jump to LSP (K)ownledge           | jumps to LSP hover information window about symbol under cursor                                                                                                                                                               |
+| `<leader>bd`  | (b)uffer (d)iagnostics                     | toggle Trouble's buffer (local) diagnostics window                                                                                                                                                                            |
+| `<leader>gd`  | (g)lobal (d)iagnostics                     | toggle Trouble's global diagnostics window                                                                                                                                                                                    |
+| `<leader>ql`  | (q)uickfix (l)ist                          | toggle Trouble's quickfix list window                                                                                                                                                                                         |
 
 ## Potential LSP Issues
 

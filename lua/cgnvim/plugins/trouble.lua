@@ -1,24 +1,24 @@
 return {
   "folke/trouble.nvim",
   opts = function()
-    return require "cgnvim.configs.trouble"
+    return require("cgnvim.configs.trouble")
   end,
   cmd = "Trouble",
   keys = {
     {
-      "<leader>xx",
+      "<leader>gd",
       "<cmd>Trouble diagnostics toggle<cr>",
-      desc = "Diagnostics (Trouble)",
+      desc = "(g)lobal (d)iagnostics (Trouble)",
     },
     {
-      "<leader>xX",
+      "<leader>bd",
       "<cmd>Trouble diagnostics toggle filter.buf=0<cr>",
-      desc = "Buffer Diagnostics (Trouble)",
+      desc = "(b)uffer (d)iagnostics (Trouble)",
     },
     {
-      "<leader>cs",
+      "<leader>sym",
       "<cmd>Trouble symbols toggle focus=false<cr>",
-      desc = "Symbols (Trouble)",
+      desc = "(sym)bols (Trouble)",
     },
     {
       "<leader>cl",
@@ -31,9 +31,9 @@ return {
       desc = "Location List (Trouble)",
     },
     {
-      "<leader>xQ",
+      "<leader>ql",
       "<cmd>Trouble qflist toggle<cr>",
-      desc = "Quickfix List (Trouble)",
+      desc = "(q)uickfix (l)ist (Trouble)",
     },
   },
 }

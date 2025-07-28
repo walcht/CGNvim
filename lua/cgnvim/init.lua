@@ -5,12 +5,18 @@ vim.g.maplocalleader = " "
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not (vim.uv or vim.loop).fs_stat(lazypath) then
   local lazyrepo = "https://github.com/folke/lazy.nvim.git"
-  local out = vim.fn.system({ "git", "clone", "--filter=blob:none",
-    "--branch=stable", lazyrepo, lazypath })
+  local out = vim.fn.system({
+    "git",
+    "clone",
+    "--filter=blob:none",
+    "--branch=stable",
+    lazyrepo,
+    lazypath,
+  })
   if vim.v.shell_error ~= 0 then
     vim.api.nvim_echo({
       { "Failed to clone lazy.nvim:\n", "ErrorMsg" },
-      { out,                            "WarningMsg" },
+      { out, "WarningMsg" },
       { "\nPress any key to exit..." },
     }, true, {})
     vim.fn.getchar()
@@ -23,20 +29,25 @@ require("lazy").setup({
   spec = {
     { import = "cgnvim.plugins" },
   },
-  install = { colorscheme = { "material-deep-ocean" } },
+  install = { colorscheme = { "kanagawa-dragon" } },
   checker = { enabled = false },
+  ui = {
+    border = "single",
+  },
 })
 
-vim.cmd "colorscheme material-deep-ocean"
+vim.cmd([[colorscheme kanagawa-dragon]])
 
-if vim.loader then vim.loader.enable() end
-for _, source in ipairs {
+if vim.loader then
+  vim.loader.enable()
+end
+for _, source in ipairs({
   "cgnvim.gsettings",
   "cgnvim.gmappings",
   "cgnvim.gautocmds",
   "cgnvim.gusercmds",
   "cgnvim.lspconfig",
-} do
+}) do
   local status_ok, error_object = pcall(require, source)
   if not status_ok then
     print("Failed to load: " .. source .. "\n\n" .. error_object)

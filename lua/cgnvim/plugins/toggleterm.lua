@@ -1,8 +1,8 @@
 return {
-  'akinsho/toggleterm.nvim',
+  "akinsho/toggleterm.nvim",
   version = "*",
   cmd = { "ToggleTerm" },
   opts = function()
-    return require "cgnvim.configs.toggleterm"
+    return require("cgnvim.configs.toggleterm")
   end,
 }

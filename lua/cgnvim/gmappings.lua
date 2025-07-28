@@ -1,6 +1,7 @@
--- this file contains global (not buffer-local) mappings
--- for buffer-dependent mappings (i.e., mappings that are only valid within
--- certain buffers) see: lua/cgnvim/configs/
+--[[This file contains global (not buffer-local) mappings (hence the g in this
+file's name). For buffer-dependent mappings (i.e., mappings that are only valid
+within certain buffers) see: lua/cgnvim/configs/]]
+
 local opts = { noremap = true, silent = true }
 local m = vim.keymap.set
 
@@ -34,7 +35,7 @@ m("n", "n", "nzzzv")
 m("n", "N", "Nzzzv")
 -- disable annoying keys
 m("n", "Q", "<nop>")
-m("n", "\"", "<nop>")
+m("n", '"', "<nop>")
 -- (r)eplace (w)ord
 m("n", "<leader>rw", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])
 -- nvim-tree
@@ -68,13 +69,17 @@ m("x", "K", ":move '<-2<CR>gv-gv", opts)
 m("x", "<A-j>", ":move '>+1<CR>gv-gv", opts)
 m("x", "<A-k>", ":move '<-2<CR>gv-gv", opts)
 -- avoid bad vim paste behaviour
-m("x", "<leader>p", "\"_dP")
+m("x", "<leader>p", '"_dP')
 
 -------------------------------------------------------------------------------
 --------------------------------- TERMINAL ------------------------------------
 -------------------------------------------------------------------------------
 
 m("t", "<ESC>", "<C-\\><C-n>", opts)
+
+-------------------------------------------------------------------------------
+------------------------------- DIAGNOSTICS -----------------------------------
+------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------
 ----------------------------------- MISC --------------------------------------
@@ -85,7 +90,7 @@ m({ "n", "v", "x" }, "<leader>tr", ":set invrelativenumber<CR>", opts)
 -- (t)oggle (s)pell
 m({ "n", "v", "x" }, "<leader>ts", ":set spell!<CR>", opts)
 -- delete to void register
-m({ "n", "v", "x" }, "<leader>d", "\"_d")
+m({ "n", "v", "x" }, "<leader>d", '"_d')
 -- copy to system clipboard
-m({ "n", "v", "x" }, "<leader>y", "\"+y")
-m({ "n", "v", "x" }, "<leader>Y", "\"+Y")
+m({ "n", "v", "x" }, "<leader>y", '"+y')
+m({ "n", "v", "x" }, "<leader>Y", '"+Y')

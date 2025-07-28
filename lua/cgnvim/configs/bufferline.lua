@@ -7,13 +7,13 @@ local options = {
     left_mouse_command = "buffer %d",
     middle_mouse_command = nil,
     indicator = {
-      icon = '▎',
-      style = 'icon',
+      icon = "▎",
+      style = "icon",
     },
-    modified_icon = '*',
-    close_icon = '',
-    left_trunc_marker = '',
-    right_trunc_marker = '',
+    modified_icon = "*",
+    close_icon = "",
+    left_trunc_marker = "",
+    right_trunc_marker = "",
     max_name_length = 18,
     max_prefix_length = 16,
     truncate_names = true,
@@ -24,8 +24,8 @@ local options = {
         filetype = "NvimTree",
         text = "Explorer",
         text_align = "center",
-        separator = true
-      }
+        separator = true,
+      },
     },
     show_buffer_close_icons = true,
     show_close_icon = true,
@@ -35,7 +35,7 @@ local options = {
     separator_style = "thin",
     always_show_bufferline = true,
     sort_by = "id",
-  }
+  },
 }
 
 return options

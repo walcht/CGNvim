@@ -1,3 +1,8 @@
+--[[This file defines global Vim autocmds (i.e., not related to any particular
+plugin - hence the g in this file's name)]]
+
+local m = vim.keymap.set
+
 -------------------------------------------------------------------------------
 --------------------------------- NVIM-TREE -----------------------------------
 -------------------------------------------------------------------------------
@@ -13,38 +18,93 @@ vim.api.nvim_create_autocmd({ "VimEnter" }, {
       return
     end
     if is_no_name then
-      require("nvim-tree.api").tree.toggle({ focus = false, find_file = true, })
+      require("nvim-tree.api").tree.toggle({ focus = false, find_file = true })
     end
-  end
+  end,
 })
 
 -------------------------------------------------------------------------------
 ------------------------------------ LSP --------------------------------------
 -------------------------------------------------------------------------------
 
--- Use telelscope to go-to definitions/implementations since it provides
--- a nice interface in case of multiples definitions/implementations
 vim.api.nvim_create_autocmd({ "LspAttach" }, {
   callback = function(args)
-    local m = vim.keymap.set
     local _ = vim.lsp.get_client_by_id(args.data.client_id)
-    local opts = { noremap = true, silent = true }
+
     -- TODO: only add mappings after checking server capabilities
-    m("n", "gi", ":Telescope lsp_implementations<CR>", opts)
-    m("n", "gd", ":Telescope lsp_definitions<CR>", opts)
-    m("n", "gD", ":Telescope lsp_definitions<CR>", opts)
-    m("n", "gr", ":Telescope lsp_references<CR>", opts)
-    m("n", "K", vim.lsp.buf.hover, opts)
-    -- (e)xplain
-    m("n", "<leader>e", vim.diagnostic.open_float, opts)
-    -- (q)uick (f)ix
-    m("n", "<leader>qf", vim.diagnostic.setqflist, opts)
-    -- (c)ode (a)ction
-    m("n", "<leader>ca", vim.lsp.buf.code_action, opts)
-    -- (f)ormat (f)ile (or selection in visual mode)
-    m("n", "<leader>ff", vim.lsp.buf.format, {
-      noremap = true, desc = "Format File"
+
+    -- (g)o (i)mplementations
+    m("n", "gi", vim.lsp.buf.implementation, {
+      noremap = true,
+      desc = "(g)o (i)mplementations of symbol under cursor using LSP",
     })
+
+    -- (g)o (d)efinition
+    m("n", "gd", vim.lsp.buf.definition, {
+      noremap = true,
+      desc = "(g)o (d)efinition of symbol under cursor using LSP",
+    })
+
+    -- (g)o (D)eclaration
+    m("n", "gd", vim.lsp.buf.declaration, {
+      noremap = true,
+      desc = "(g)o (D)eclaration of symbol under cursor using LSP",
+    })
+
+    -- (g)o (r)eferences
+    m("n", "gr", vim.lsp.buf.references, {
+      noremap = true,
+      desc = "(g)o (r)references of symbol under cursor using LSP",
+    })
+
+    -- hover information of symbol under cursor
+    m("n", "K", function()
+      vim.lsp.buf.hover({ border = "single" })
+    end, {
+      noremap = true,
+      desc = "hover information about symbol under cursor using LSP",
+    })
+
+    -- (t)oggle (v)irtual (l)ines diagnostics
+    m("n", "<leader>tvl", function()
+      local new_config = not vim.diagnostic.config().virtual_lines
+      vim.diagnostic.config({ virtual_lines = new_config })
+    end, { noremap = true, desc = "(t)oggle (v)irtual (l)ines diagnostics" })
+
+    -- (t)oggle (v)irtual (t)ext diagnostics
+    m("n", "<leader>tvt", function()
+      local new_config = not vim.diagnostic.config().virtual_text
+      vim.diagnostic.config({ virtual_text = new_config })
+    end, { noremap = true, desc = "(t)oggle (v)irtual (t)ext diagnostics" })
+
+    -- (t)oggle (i)nlay (h)ints
+    m("n", "<leader>tih", function()
+      vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
+    end, { noremap = true, desc = "(t)oggle (i)nlay (h)ints" })
+
+    -- TODO: (t)oggle (c)ode (l)enses
+
+    -- (e)xplain (d)iagnostics under cursor
+    m("n", "<leader>ed", vim.diagnostic.open_float, { noremap = true, desc = "(e)xplain (d)iagnostics under cursor" })
+
+    -- (q)uick (f)ix
+    m("n", "<leader>qf", vim.diagnostic.setqflist, {
+      noremap = true,
+      desc = "(q)uick (f)ix",
+    })
+
+    -- (c)ode (a)ction
+    m("n", "<leader>ca", vim.lsp.buf.code_action, {
+      noremap = true,
+      desc = "(c)ode (a)ctions available for symbol under cursor",
+    })
+
+    -- (r)ename (s)ymbol
+    m("n", "<leader>rs", vim.lsp.buf.rename, {
+      noremap = true,
+      desc = "(r)ename (s)ymbol under the cursor and all of its references using LSP",
+    })
+
     -- (t)oggle (l)anguage (s)erver
     m("n", "<leader>tls", function()
       local buf = vim.api.nvim_get_current_buf()
@@ -54,8 +114,11 @@ vim.api.nvim_create_autocmd({ "LspAttach" }, {
       else
         vim.cmd("LspStart")
       end
-    end, { noremap = false, desc = "Toggle LSP" })
-  end
+    end, {
+      noremap = false,
+      desc = "(t)oggle (l)anguage (s)erver attached to current buffer",
+    })
+  end,
 })
 
 -------------------------------------------------------------------------------
@@ -64,14 +127,12 @@ vim.api.nvim_create_autocmd({ "LspAttach" }, {
 
 vim.api.nvim_create_autocmd({ "TermOpen" }, {
   callback = function()
-    local opts = { buffer = 0 }
-    local m = vim.keymap.set
-    m('t', '<esc>', [[<C-\><C-n>]], opts)
-    m('t', 'jk', [[<C-\><C-n>]], opts)
-    m('t', '<C-h>', [[<Cmd>wincmd h<CR>]], opts)
-    m('t', '<C-j>', [[<Cmd>wincmd j<CR>]], opts)
-    m('t', '<C-k>', [[<Cmd>wincmd k<CR>]], opts)
-    m('t', '<C-l>', [[<Cmd>wincmd l<CR>]], opts)
-    m('t', '<C-w>', [[<C-\><C-n><C-w>]], opts)
-  end
+    m("t", "<esc>", [[<C-\><C-n>]], { buffer = 0 })
+    m("t", "jk", [[<C-\><C-n>]], { buffer = 0 })
+    m("t", "<C-h>", [[<Cmd>wincmd h<CR>]], { buffer = 0 })
+    m("t", "<C-j>", [[<Cmd>wincmd j<CR>]], { buffer = 0 })
+    m("t", "<C-k>", [[<Cmd>wincmd k<CR>]], { buffer = 0 })
+    m("t", "<C-l>", [[<Cmd>wincmd l<CR>]], { buffer = 0 })
+    m("t", "<C-w>", [[<C-\><C-n><C-w>]], { buffer = 0 })
+  end,
 })

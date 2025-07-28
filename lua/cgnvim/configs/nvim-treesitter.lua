@@ -11,12 +11,12 @@ return {
     "hlsl",
     "lua",
     "bash",
-    --  "javascript",
-    --  "typescript",
-    --  "html",
-    --  "css",
-    --  "python",
-    --  "powershell",
+    "javascript",
+    "typescript",
+    "html",
+    "css",
+    "python",
+    "powershell",
 
     ---------------------------------------------------------------------------
     -------------------------------- BUILD SYSTEMS ----------------------------
@@ -47,7 +47,6 @@ return {
 
     "objdump",
     "gitignore",
-
   },
   sync_install = false,
   highlight = { enable = true },

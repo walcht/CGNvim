@@ -22,9 +22,9 @@ the usual game/graphics IDEs (e.g., Visual Studio).
 - [X] Lazy Neovim plugin management (i.e., plugins are only loaded when needed)
 - [X] 3rd party LSPs/formatters/DAPs are automatically handled by [mason.nvim][mason] using [lazy.nvim][lazynvim]
 - [X] Clear project structure that is highly customizable and easily extendable:
-    - To add/edit a plugin, see [Adding/Editing Plugins](#adding-or-editing-plugins)
-    - To add/edit a LSP, see [Adding/Editing LSPs](#adding-or-editing-lsps)
-    - To add/edit a formatter, see [Adding/Editing Formatters](#adding-or-editing-formatters)
+    - To add/edit a plugin, see [Adding or Editing Plugins](#adding-or-editing-plugins)
+    - To add/edit a LSP, see [Adding or Editing LSPs](#adding-or-editing-lsps)
+    - To add/edit a formatter, see [Adding or Editing Formatters](#adding-or-editing-formatters)
 
 ## Unity Game Engine
 

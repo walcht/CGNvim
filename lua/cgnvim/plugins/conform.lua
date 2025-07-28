@@ -4,6 +4,14 @@ return {
   cmd = { "ConformInfo" },
   keys = {
     {
+      "fb",
+      function()
+        require("conform").format({ async = true })
+      end,
+      mode = "n",
+      desc = "(f)ormat (b)uffer using language formatter if available",
+    },
+    {
       "<C-I>",
       function()
         require("conform").format({ async = true })

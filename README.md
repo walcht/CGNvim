@@ -22,9 +22,9 @@ the usual game/graphics IDEs (e.g., Visual Studio).
 - [X] Lazy Neovim plugin management (i.e., plugins are only loaded when needed)
 - [X] 3rd party LSPs/formatters/DAPs are automatically handled by [mason.nvim][mason] using [lazy.nvim][lazynvim]
 - [X] Clear project structure that is highly customizable and easily extendable:
-    - To add/edit a plugin, see [Adding/Editing Plugins](#adding/editing-plugins)
-    - To add/edit a LSP, see [Adding/Editing LSPs](#adding/editing-lsps)
-    - To add/edit a formatter, see [Adding/Editing Formatters](#adding/editing-formatters)
+    - To add/edit a plugin, see [Adding/Editing Plugins](#adding-or-editing-plugins)
+    - To add/edit a LSP, see [Adding/Editing LSPs](#adding-or-editing-lsps)
+    - To add/edit a formatter, see [Adding/Editing Formatters](#adding-or-editing-formatters)
 
 ## Unity Game Engine
 
@@ -132,7 +132,7 @@ warnings can be safely ignored. This is the case with Roslyn LS, a lot of
 `Unresolved references` can be simply ignored (hence why its logger level is set
 to ERROR).
 
-## Adding/Editing Plugins
+## Adding or Editing Plugins
 
 Plugins are managed by [lazy.nvim][lazynvim] and are automatically loaded
 from ```lua/cgnvim/plugins/``` where each file corresponds to a plugin.
@@ -170,7 +170,7 @@ and define your plugin setup options there:
 3. restart Neovim and check the command `:Lazy` to see if your plugin has
 successfully been added
 
-## Adding/Editing LSPs
+## Adding or Editing LSPs
 
 LSPs are enabled in ```lua/cgnvim/lspconfig.lua``` and their configurations
 live in ```lua/cgnvim/lsps/```.
@@ -220,7 +220,7 @@ if it is available in Mason (check command `:Mason`), then navigate to
 a Python file). Check `:LspInfo` to see if your LSP configuration is there
 and a LSP client is successfully attached. Check `:LspLog` for LSP logs.
 
-## Adding/Editing Formatters
+## Adding or Editing Formatters
 
 Formatting is managed by the [conform.nvim][conform] plugin
 in addition to [mason-tool-installer.nvim][mason-tool-installer] for automatic

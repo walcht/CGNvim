@@ -2,7 +2,7 @@
 
 !!WORK IN PROGRESS PROJECT!!
 
-CGNvim is a simple **Neovim >= 0.11** configuration for game and computer
+CGNvim is a simple and modern **Neovim >= 0.11** configuration for game and computer
 graphics development environment (e.g., Unity game engine, C++ game development,
 development using low-level graphics API etc.).
 
@@ -11,29 +11,25 @@ development using low-level graphics API etc.).
 This configuration tries to provide a *minimal* set of plugins to approximate
 the usual game/graphics IDEs (e.g., Visual Studio).
 
-- [X] LSP completion/hints and linting support for: C# (Roslyn LS),
-C/C++ (clangd), Lua (lua-language-server), GLSL (glsl-analyzer). LSP is
-implemented using Neovim's >= 0.11 core LSP module.
+- [X] LSP completion/hints and linting support for: C# (Roslyn LS), C/C++ (clangd),
+      Lua (lua-language-server), GLSL (glsl-analyzer). LSP is implemented using Neovim's >= 0.11 core LSP module.
 - [X] Detailed guide for integration with the Unity game engine
 - [X] Fast and lightweight default configuration
-- [X] Syntax highlighting using [nvim-treesitter](https://github.com/nvim-treesitter/nvim-treesitter)
-for: C#, C/C++, GLSL, HLSL, XML, YAML, etc.
+- [X] Syntax highlighting using [nvim-treesitter][nvim-treesitter] for: C#, C/C++, GLSL, HLSL, XML, YAML, etc.
 - [X] Formatting (and autoformatting on save) for: C# (csharpier), Lua (stylua), C++
-- [X] Integrated terminal using [toggleterm.nvim](https://github.com/akinsho/toggleterm.nvim) (togglable using: `<Space>tt`)
-- [X] Mnemonic keymaps that make sense (e.g., `<Space>tt` for **t**oggle
-**t**erminal)
+- [X] Integrated terminal using [toggleterm.nvim][toggleterm] (togglable using: `<Space>tt`)
+- [X] Mnemonic keymaps that make sense (e.g., `<Space>tt` for (t)oggle (t)erminal)
 - [X] Lazy Neovim plugin management (i.e., plugins are only loaded when needed)
-- [X] 3rd party LSPs/formatters/DAPs are automatically handled by (mason.nvim)[https://github.com/mason-org/mason.nvim] 
-using [lazy.nvim](https://github.com/folke/lazy.nvim)
+- [X] 3rd party LSPs/formatters/DAPs are automatically handled by [mason.nvim][mason] using [lazy.nvim][lazynvim]
 - [X] Clear project structure that is highly customizable and easily extendable:
-    - To add/edit a plugin, see [adding/editing plugins][#adding/editing_plugins]
-    - To add/edit a LSP, see [adding/editing lsp][#adding/editing_lsps]
-    - To add/edit a formatter, see [adding/editing formatters][#adding/editing_formatters]
+    - To add/edit a plugin, see [Adding/Editing Plugins](#adding/editing-plugins)
+    - To add/edit a LSP, see [Adding/Editing LSPs](#adding/editing-lsps)
+    - To add/edit a formatter, see [Adding/Editing Formatters](#adding/editing-formatters)
 
 ## Unity Game Engine
 
 For integration with the Unity game engine see this detailed guide:
-[neovim-unity](https://github.com/walcht/neovim-unity)
+[neovim-unity][neovim-unity]
 
 ## Project Structure
 
@@ -72,7 +68,7 @@ by the LazeNvim plugin manager. The options passed to its LSP setup are defined
 in a file of similar name in ```lua/cgnvim/configs/```.
 
 Each entry in ```lua/cgnvim/lsps/``` denotes a specific LSP configuration that
-is usually copied from (nvim-lspconfig)[https://github.com/neovim/nvim-lspconfig/tree/master/lsp]
+is usually copied from [nvim-lspconfig/lsp][nvim-lspconfig-lsps]
 and is loaded and enabled in ```lua/cgnvim/lspconfig.lua```.
 
 ## Keymaps Overview
@@ -138,7 +134,9 @@ to ERROR).
 
 ## Adding/Editing Plugins
 
-Plugins are managed by [lazy.nvim](https://github.com/folke/lazy.nvim).
+Plugins are managed by [lazy.nvim][lazynvim] and are automatically loaded
+from ```lua/cgnvim/plugins/``` where each file corresponds to a plugin.
+
 To add a new plugin:
 
 1. create a new lua file at ```lua/cgnvim/plugins/<plugin-name>.lua``` and
@@ -155,6 +153,7 @@ add the LazyNvim configuration for it. For example:
       opts = function()
         return require("cgnvim.configs.<plugin-name>")
       end,
+      ...,  -- other LazyNvim configurations
     }
     ```
 
@@ -192,7 +191,7 @@ To add a new LSP, say a LSP for Python files (e.g., ruff):
 
 2. create a new lua file under the path ```lua/cgnvim/lsps/ruff.lua``` and
 define the LSP client configuration in it as follows (it is usually copied
-from: (nvim-lspconfig)[https://github.com/neovim/nvim-lspconfig/tree/master/lsp]):
+from: [nvim-lspconfig/lsps][nvim-lspconfig-lsps]):
 
     ```lua
     return {
@@ -223,9 +222,9 @@ and a LSP client is successfully attached. Check `:LspLog` for LSP logs.
 
 ## Adding/Editing Formatters
 
-Formatting is managed by the (conform.nvim)[https://github.com/stevearc/conform.nvim/tree/master] plugin
-in addition to (mason-tool-installer.nvim)[https://github.com/WhoIsSethDaniel/mason-tool-installer.nvim] for automatic
-installation by (mason.nvim)[https://github.com/mason-org/mason.nvim].
+Formatting is managed by the [conform.nvim][conform] plugin
+in addition to [mason-tool-installer.nvim][mason-tool-installer] for automatic
+installation by [mason.nvim][mason].
 
 To add a new formatter, say a formatter (e.g., `prettierd`) for Javascript files:
 
@@ -255,7 +254,8 @@ Mason, if it is listed in Mason (check command `:Mason`), then navigate to
     }
     ```
 
-3. restart Neovim. Check `:Mason` to see if your formatter is installed.
+3. restart Neovim. Check `:ConformInfo` and see if your formatter is ready. Otherwise
+check `:Mason` to see if your formatter is installed.
 Try  to open a file with the right extension and format it (either by
 format on write using `:w`, or using `:lua require("conform").format({ async = true }))`
 
@@ -279,3 +279,12 @@ crash Neovim because of treesitter and/or LSP)
 ## License
 
 MIT License. Read `license.txt` file.
+
+[nvim-treesitter]: https://github.com/nvim-treesitter/nvim-treesitter
+[toggleterm]: https://github.com/akinsho/toggleterm.nvim
+[mason]: https://github.com/mason-org/mason.nvim
+[lazynvim]: https://github.com/folke/lazy.nvim
+[neovim-unity]: https://github.com/walcht/neovim-unity
+[nvim-lspconfig-lsps]: https://github.com/neovim/nvim-lspconfig/tree/master/lsp
+[conform]: https://github.com/stevearc/conform.nvim/tree/master
+[mason-tool-installer]: https://github.com/WhoIsSethDaniel/mason-tool-installer.nvim

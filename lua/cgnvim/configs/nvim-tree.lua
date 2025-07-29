@@ -10,10 +10,6 @@ local function custom_on_attach(bufnr)
     }
   end
 
-  -----------------------------------------------------------------------------
-  --------------------------------- MAPPINGS ----------------------------------
-  -----------------------------------------------------------------------------
-
   local m = vim.keymap.set
 
   -- consistent with LSP/other plugins
@@ -40,12 +36,7 @@ local function custom_on_attach(bufnr)
   m("n", "<C-p>", api.node.navigate.diagnostics.prev, opts("(p)rev diagnostic"))
   m("n", "f", api.live_filter.start, opts("(f)ilter"))
   m("n", "F", api.live_filter.clear, opts("Clean (F)ilter"))
-  m(
-    "n",
-    "<leader>tg",
-    api.tree.toggle_gitignore_filter,
-    opts("(t)oggle (g)itignore")
-  )
+  m("n", "<leader>tg", api.tree.toggle_gitignore_filter, opts("(t)oggle (g)itignore"))
   m("n", "H", api.tree.toggle_hidden_filter, opts("Show/(H)ide dotfiles"))
   m("n", "m", api.marks.toggle, opts("(m)ark/un(m)ark"))
   m("n", "o", api.node.open.edit, opts("(o)pen"))
@@ -60,11 +51,7 @@ local function custom_on_attach(bufnr)
   m("n", "g?", api.tree.toggle_help, opts("Help"))
 end
 
--------------------------------------------------------------------------------
------------------------------------ OPTIONS -----------------------------------
--------------------------------------------------------------------------------
-
-local options = {
+return {
   view = {
     width = 40,
     side = "right",
@@ -82,5 +69,3 @@ local options = {
   -- custom keymaps
   on_attach = custom_on_attach,
 }
-
-return options

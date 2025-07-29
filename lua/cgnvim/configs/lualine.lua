@@ -1,4 +1,4 @@
-local options = {
+return {
   options = {
     icons_enabled = true,
     theme = "onedark",
@@ -6,4 +6,3 @@ local options = {
     section_separators = "",
   },
 }
-return options

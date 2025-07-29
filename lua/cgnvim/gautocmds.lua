@@ -46,7 +46,7 @@ vim.api.nvim_create_autocmd({ "LspAttach" }, {
     })
 
     -- (g)o (D)eclaration
-    m("n", "gd", vim.lsp.buf.declaration, {
+    m("n", "gD", vim.lsp.buf.declaration, {
       noremap = true,
       desc = "(g)o (D)eclaration of symbol under cursor using LSP",
     })

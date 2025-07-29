@@ -1,8 +1,6 @@
-local options = {
+return {
   registries = {
     -- add additional registries here
     "github:mason-org/mason-registry",
   },
 }
-
-return options

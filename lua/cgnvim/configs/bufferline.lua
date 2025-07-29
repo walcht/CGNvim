@@ -1,4 +1,4 @@
-local options = {
+return {
   options = {
     mode = "buffers",
     numbers = "ordinal",
@@ -37,5 +37,3 @@ local options = {
     sort_by = "id",
   },
 }
-
-return options

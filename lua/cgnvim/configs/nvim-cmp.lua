@@ -28,12 +28,11 @@ local kind_icons = {
   TypeParameter = "󰅲",
 }
 
-local options = {
+return {
   formatting = {
     format = function(entry, vim_item)
       -- kind icons
-      vim_item.kind =
-        string.format("%s %s", kind_icons[vim_item.kind], vim_item.kind)
+      vim_item.kind = string.format("%s %s", kind_icons[vim_item.kind], vim_item.kind)
       -- source
       vim_item.menu = ({
         buffer = "[BUFFER]",
@@ -77,5 +76,3 @@ local options = {
     { name = "path" },
   },
 }
-
-return options

@@ -8,4 +8,12 @@ return {
   opts = function()
     return require("cgnvim.configs.nvim-tree")
   end,
+  keys = {
+    {
+      "<leader>ex",
+      "<cmd>NvimTreeToggle<CR>",
+      mode = "n",
+      desc = "toggle file (ex)plorer",
+    },
+  },
 }

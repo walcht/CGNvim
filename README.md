@@ -16,13 +16,13 @@ the usual game/graphics IDEs (e.g., Visual Studio).
 - [X] Detailed guide for integration with the Unity game engine
 - [X] Fast and lightweight default configuration
 - [X] Syntax highlighting using [nvim-treesitter][nvim-treesitter] for: C#, C/C++, GLSL, HLSL, XML, YAML, etc.
-- [X] Formatting (and autoformatting on save) for: C# (csharpier), Lua (stylua), C++
+- [X] Formatting (and autoformatting on save) using [conform.nvim][conform] for: C# (csharpier), Lua (stylua), C++, etc.
 - [X] Integrated terminal using [toggleterm.nvim][toggleterm] (togglable using: `<Space>tt`)
-- [X] Git integration using [gitsigns,nvim][gitsigns]
+- [X] Git integration using [gitsigns.nvim][gitsigns]
 - [X] Mnemonic keymaps that make sense (e.g., `<Space>tt` for (t)oggle (t)erminal)
 - [X] Lazy Neovim plugin management (i.e., plugins are only loaded when needed)
 - [X] 3rd party LSPs/formatters/DAPs are automatically handled by [mason.nvim][mason] using [lazy.nvim][lazynvim]
-- [X] Clear project structure that is highly customizable and easily extendable:
+- [X] Clear project structure that is highly customizable and easily extensible:
     - To add/edit a plugin, see [Adding or Editing Plugins](#adding-or-editing-plugins)
     - To add/edit a LSP, see [Adding or Editing LSPs](#adding-or-editing-lsps)
     - To add/edit a formatter, see [Adding or Editing Formatters](#adding-or-editing-formatters)
@@ -74,25 +74,77 @@ and is loaded and enabled in ```lua/cgnvim/lspconfig.lua```.
 
 ## Default Keymaps Overview
 
-To list all the defined and default keymaps, enter the command `:map`. CGNvim
-tries to simplify the memorization of keymaps by relying on mnemonics.
+To list all the defined and default keymaps, enter the command `:map`
+(or for a *better* output `:Telescope keymaps `). CGNvim tries to simplify
+the memorization of keymaps by relying on mnemonics.
 
 The main keymaps that contribute the most at simplifying the usual workflow are
-(`<leader>` is `<Space>` unless you have changed the default configuration):
+listed below (`<leader>` is `<Space>` unless the default configuration is changed).
+
+### General Keymaps
+
+| Keymap            | Mode    | Short Description                         | Detailed Description                                                                                                                                                                                                         |
+| ----------------- |-------- | ----------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `<leader>tt`      | n       | (t)oggle (t)erminal                       | toggle the integrated terminal                                                                                                                                                                                               |
+| `<leader>ex`      | n       | toggle file (ex)plorer                    | toggle the NvimTree file explorer                                                                                                                                                                                            |
+| `<leader>rw`      | n       | (r)ename (w)ord                           | rename all occurences of the word under cursor in current buffer                                                                                                                                                             |    
+| `<leader>ts`      | n,v,x   | (t)oggle (s)pell                          | toggle spell checking for current buffer                                                                                                                                                                                     |    
+| `<leader>ss`      | n       | (s)pell (s)uggest                         | show Telescope's spell suggestion for the word under the cursor                                                                                                                                                              |
+| `<leader>tr`      | n,v,x   | (t)oggle (r)elative line numbering        | toggle relative line numbering (default: off)                                                                                                                                                                                |
+| `<leader>d`       | n,v,x   | (d)elete to void register                 | (d)elete to void register (without copying). Vim's default delete overwrites the content of the register                                                                                                                     |
+| `<leader>y`       | n,v,x   | (y)ank to system clipboard                | copy (yank) to system clipboard. Might require an external package for support on Wayland                                                                                                                                    |
+| `J`               | x       | move selected line(s) down(J)             |                                                                                                                                                                                                                              |
+| `K`               | x       | move selected line(s) up(K)               |                                                                                                                                                                                                                              |
+| `J`               | n       | append line below to current line         |                                                                                                                                                                                                                              |
+
+### Window Navigation and Resizing Keymaps
+
+| Keymap            | Mode    | Short Description                         |
+| ----------------- | ------- | ----------------------------------------- |
+| `<C-h>`           | n       | move to left(h) window                    |
+| `<C-j>`           | n       | move to down(j) window                    |
+| `<C-k>`           | n       | move to up(k) window                      |
+| `<C-l>`           | n       | move to right(l) window                   |
+| `<C-Up>`          | n       | resize window size (Up)wards              |
+| `<C-Down>`        | n       | resize window size (Down)wards            |
+| `<C-Left>`        | n       | resize window size (Left)wards            |
+| `<C-Right>`       | n       | resize window size (Right)wards           |
+| `<S-l>`           | n       | navigate to right(l) buffer               |
+| `<S-h>`           | n       | navigate to left(h) buffer                |
+
+### File Explorer Keymaps
+
+Only keymaps that are *considered* important are listed
+
+| Keymap            | Mode    | Short Description                         |
+| ----------------- | ------- | ----------------------------------------- |
+| `g?`              | n       | (g)o to help(?) window to show keymaps    |
+| `v<CR>`           | n       | open(<CR>) (v)ertically                   |
+| `a`               | n       | (a)ppend/create file/folder               |
+| `y`               | n       | (y)ank basename to system clipboard       |
+| `Y`               | n       | (Y)ank file/directory absolute path       |
+| `c`               | n       | copy file (c)ontent                       |
+| `<leader>df`      | n       | (d)elete (f)ile/directory                 |
+| `r`               | n       | (r)ename file/directory                   |
+| `Tab`             | n       | preview file/expand directory             |
+| `K`               | n       | show file metadata info                   |
+| `.`               | n       | run command on current(.) entry           |
+| `<leader>tg`      | n       | (t)oggle (g)itignore filter               |
+| `<leader>td`      | n       | ((t)oggle (d)otfiles filter               |
+
+
+### Formatting Keymaps
+
+| Keymap            | Mode    | Short Description                         | Detailed Description                                                                                                                                                                                                         |
+| ----------------- | ------- | ----------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `fb`              | n       | (f)ormat (b)uffer                         | format current buffer according to [conform.nvim][conform] config                                                                                                                                                            |
+| `<C-I>`           | n       | same as `fb`                              | VSCode formatting shortcut                                                                                                                                                                                                   |
+| `<C-K><C-D>`      | n       | same as `fb`                              | Visual Studio formatting shortcut                                                                                                                                                                                            |
+
+### Git Keymaps
 
 | Keymap            | Short Description                         | Detailed Description                                                                                                                                                                                                         |
 | ----------------- | ----------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `<leader>tt`      | (t)oggle (t)erminal                       | toggle the integrated terminal                                                                                                                                                                                               |
-| `<leader>ex`      | toggle file (ex)plorer                    | toggle the NvimTree file explorer                                                                                                                                                                                            |
-| `<leader>rw`      | (r)ename (w)ord                           | rename all occurences of the word under cursor in current buffer                                                                                                                                                             |    
-| `<leader>ts`      | (t)oggle (s)pell                          | toggle spell checking for current buffer                                                                                                                                                                                     |    
-| `<leader>ss`      | (s)pell (s)uggest                         | show Telescope's spell suggestion for the word under the cursor                                                                                                                                                              |
-| `<leader>tr`      | (t)oggle (r)elative line numbering        | toggle relative line numbering (default: off)                                                                                                                                                                                |
-| FORMATTING                                                                                                                                                                                                                                                                                   |
-| `fb`              | (f)ormat (b)uffer                         | format current buffer according to [conform.nvim][conform] config                                                                                                                                                            |
-| `<C-I>`           | same as `fb`                              | VSCode formatting shortcut                                                                                                                                                                                                   |
-| `<C-K><C-D>`      | same as `fb`                              | Visual Studio formatting shortcut                                                                                                                                                                                            |
-| GIT                                                                                                                                                                                                                                                                                          |
 | `<leader>gsb`     | (g)it (s)tage (b)uffer                    | stage the whole current buffer                                                                                                                                                                                               |
 | `<leader>grb`     | (g)it (r)eset (b)uffer                    | reset the whole current buffer                                                                                                                                                                                               |
 | `<leader>gph`     | (g)it (p)review (h)unk                    | highlight hunk under cursor if a hunk is present                                                                                                                                                                             |
@@ -102,7 +154,11 @@ The main keymaps that contribute the most at simplifying the usual workflow are
 | `[h`              | prev (h)unk ([ on the left)               | navigate to previous hunk                                                                                                                                                                                                    | 
 | `<leader>gdv`     | (g)it (d)iff (v)iew                       | show git diff view for current buffer                                                                                                                                                                                        |
 | `<leader>gtb`     | (g)it (t)oggle (b)lame                    | toggle git blame for current line under cursor                                                                                                                                                                               |
-| LSP (only active when an LSP client is attached)                                                                                                                                                                                                                                             |
+
+### LSP & Diagnostics Keymaps
+
+| Keymap            | Short Description                         | Detailed Description                                                                                                                                                                                                         |
+| ----------------- | ----------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `K`               | show LSP (K)ownledge                      | LSP hover information about symbol under cursor                                                                                                                                                                              |
 | `KK`              | (K)indly jump to LSP (K)ownledge          | jumps to LSP hover information window about symbol under cursor                                                                                                                                                              |
 | `gd`              | (g)o (d)efinition                         | go to the definition of the symbol under cursor                                                                                                                                                                              |
@@ -293,13 +349,14 @@ format on write using `:w`, or using `:lua require("conform").format({ async = t
 - [ ] Add Unreal Engine integration (IMPORTANT)
 - [ ] Support large files (usually JSON files that are too large completely
 crash Neovim because of treesitter and/or LSP)
-    - [X] Disable Treesitter for large files (e.g., >= 128KBs)
+    - [ ] Disable Treesitter for large files (e.g., >= 128KBs)
     - [ ] Disable LSP for large files (e.g., 32KBs)
 - [ ] Add script for the generation of single-page PDF overview of keymaps
 (IMPORTANT)
 - [ ] Add Yaml highlighting and formatting support (IMPORTANT)
 - [ ] Add snippets completion (OPTIONAL)
 - [ ] Add a minimal spell checker (OPTIONAL)
+- [ ] Add OpenGL completion (from https://github.com/vurentjie/cmp-gl)
 
 ## License
 

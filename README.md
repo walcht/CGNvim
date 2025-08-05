@@ -54,7 +54,7 @@ For integration with the Unity game engine see this detailed guide:
 │       │   └── unity.lua
 │       ├── gautocmds.lua       --> set of non-plugin-specific autocmd calls
 │       ├── gmappings.lua       --> set of non-plugin-specific mappings
-│       ├── gsettings.lua       --> set of non-buffer-specific settings and options (vim.opt & vim.g)
+│       ├── gsettings.lua       --> set of non-buffer-specific settings and options
 │       ├── gusercmds.lua       --> set of non-plugin-specific user commands
 │       ├── init.lua            --> bootstraps LazyNvim plugin manager and loads
 │       ├── lspconfig.lua       --> default LSP config + LSPs are enabled/disabled here

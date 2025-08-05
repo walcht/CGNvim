@@ -19,14 +19,6 @@ return {
       mode = "n",
       desc = "format current buffer using language formatter if available",
     },
-    {
-      "<C-k><C-d>",
-      function()
-        require("conform").format({ async = true })
-      end,
-      mode = "n",
-      desc = "format current buffer using language formatter if available",
-    },
   },
   opts = function()
     return require("cgnvim.configs.conform")

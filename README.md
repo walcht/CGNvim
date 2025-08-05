@@ -26,6 +26,10 @@ the usual game/graphics IDEs (e.g., Visual Studio).
     - To add/edit a plugin, see [Adding or Editing Plugins](#adding-or-editing-plugins)
     - To add/edit a LSP, see [Adding or Editing LSPs](#adding-or-editing-lsps)
     - To add/edit a formatter, see [Adding or Editing Formatters](#adding-or-editing-formatters)
+    - To add/edit a DAP, see [Adding or Editing DAPs](#adding-or-editing-daps)
+- [X] Debugging support using [nvim-dap][nvim-dap] with sensible default configurations for: C/C++ (codelldb),
+      Python (debugpy), C# (Unity)
+- [X] Attaching to the Unity debugger to debug editor/player instances (see [neovim-unity][neovim-unity] for details)
 
 ## Unity Game Engine
 
@@ -40,17 +44,21 @@ For integration with the Unity game engine see this detailed guide:
 ├── LICENSE.txt
 ├── lua
 │   └── cgnvim
-│       ├── configs             --> configuration for plugins (maps 1-to-1 with ./plugins/)
+│       ├── configs             --> configs for plugins (maps 1-to-1 with ./plugins/)
 │       │   ├── bufferline.lua
 │       │   ├── ...
 │       │   └── trouble.lua
+│       ├── daps                --> DAPs are added/configured here
+│       │   ├── python.lua
+│       │   ├── ...
+│       │   └── unity.lua
 │       ├── gautocmds.lua       --> set of non-plugin-specific ```vim.api.nvim_create_autocmd``` autocmd calls
 │       ├── gmappings.lua       --> set of non-plugin-specific mappings
 │       ├── gsettings.lua       --> set of non-buffer-specific settings and options (vim.opt & vim.g)
 │       ├── gusercmds.lua       --> set of non-plugin-specific ```vim.api.nvim_create_user_command``` user commands
 │       ├── init.lua            --> bootstraps LazyNvim plugin manager and loads
-│       ├── lspconfig.lua       --> default LSP configuration + LSPs are enabled/disabled here
-│       ├── lsps                --> LSPs are configured here
+│       ├── lspconfig.lua       --> default LSP config + LSPs are enabled/disabled here
+│       ├── lsps                --> LSPs are added/configured here
 │       │   ├── clangd.lua
 │       │   ├── ...
 │       │   └── roslyn_ls.lua
@@ -124,7 +132,7 @@ Only keymaps that are *considered* important are listed
 | `y`               | n       | (y)ank basename to system clipboard       |
 | `Y`               | n       | (Y)ank file/directory absolute path       |
 | `c`               | n       | copy file (c)ontent                       |
-| `<leader>df`      | n       | (d)elete (f)ile/directory                 |
+| `d`               | n       | (d)elete file/directory                   |
 | `r`               | n       | (r)ename file/directory                   |
 | `Tab`             | n       | preview file/expand directory             |
 | `K`               | n       | show file metadata info                   |
@@ -139,7 +147,6 @@ Only keymaps that are *considered* important are listed
 | ----------------- | ------- | ----------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `fb`              | n       | (f)ormat (b)uffer                         | format current buffer according to [conform.nvim][conform] config                                                                                                                                                            |
 | `<C-I>`           | n       | same as `fb`                              | VSCode formatting shortcut                                                                                                                                                                                                   |
-| `<C-K><C-D>`      | n       | same as `fb`                              | Visual Studio formatting shortcut                                                                                                                                                                                            |
 
 ### Git Keymaps
 
@@ -177,6 +184,19 @@ Only keymaps that are *considered* important are listed
 | `]d`              | next(] is on the right) (d)iagnostics     | navigate to next diagnostics                                                                                                                                                                                                 |
 | `[d`              | prev([ is on the left) (d)iagnostics      | navigate to previous diagnostics                                                                                                                                                                                             |
 
+### Debugging Keymaps
+
+| Keymap            | Short Description                         | 
+| ----------------- | ----------------------------------------- |
+| `<leader>dc`      | (d)ebugger (c)ontinue/start               |
+| `<leader>db`      | (d)ebugger toggle (b)reakpoint            |
+| `<leader>do`      | (d)ebugger step (o)ver                    |
+| `<leader>di`      | (d)ebugger step (i)nto                    |
+| `<leader>dO`      | (d)ebugger step (O)ut                     |
+| `F5`              | same as `<leader>dc`                      |
+| `F10`             | same as `<leader>do`                      |
+| `F11`             | same as `<leader>di`                      |
+| `F12`             | same as `<leader>dO`                      |
 
 ## Potential LSP Issues
 
@@ -339,6 +359,9 @@ Mason, if it is listed in Mason (check command `:Mason`), then navigate to
 check `:Mason` to see if your formatter is installed.
 Try  to open a file with the right extension and format it (either by
 format on write using `:w`, or using `:lua require("conform").format({ async = true }))`
+
+
+## Adding or Editing DAPs
 
 
 ## TODOs

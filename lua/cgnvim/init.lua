@@ -47,6 +47,7 @@ for _, source in ipairs({
   "cgnvim.gautocmds",
   "cgnvim.gusercmds",
   "cgnvim.lspconfig",
+  "cgnvim.dapconfig",
 }) do
   local status_ok, error_object = pcall(require, source)
   if not status_ok then

@@ -3,10 +3,9 @@ plugin - hence the g in this file's name)]]
 
 local m = vim.keymap.set
 
--------------------------------------------------------------------------------
---------------------------------- NVIM-TREE -----------------------------------
--------------------------------------------------------------------------------
-
+-----------------------------
+-- NVIM-TREE
+-----------------------------
 -- Open nvim-tree on directory or no-name buffer
 vim.api.nvim_create_autocmd({ "VimEnter" }, {
   callback = function(args)
@@ -23,10 +22,9 @@ vim.api.nvim_create_autocmd({ "VimEnter" }, {
   end,
 })
 
--------------------------------------------------------------------------------
------------------------------------- LSP --------------------------------------
--------------------------------------------------------------------------------
-
+-----------------------------
+-- LSP
+-----------------------------
 vim.api.nvim_create_autocmd({ "LspAttach" }, {
   callback = function(args)
     local _ = vim.lsp.get_client_by_id(args.data.client_id)
@@ -65,58 +63,23 @@ vim.api.nvim_create_autocmd({ "LspAttach" }, {
       desc = "hover information about symbol under cursor using LSP",
     })
 
-    -- (t)oggle (v)irtual (l)ines diagnostics
-    m("n", "<leader>tvl", function()
-      local new_config = not vim.diagnostic.config().virtual_lines
-      vim.diagnostic.config({ virtual_lines = new_config })
-    end, { noremap = true, desc = "(t)oggle (v)irtual (l)ines diagnostics" })
-
-    -- (t)oggle (v)irtual (t)ext diagnostics
-    m("n", "<leader>tvt", function()
-      local new_config = not vim.diagnostic.config().virtual_text
-      vim.diagnostic.config({ virtual_text = new_config })
-    end, { noremap = true, desc = "(t)oggle (v)irtual (t)ext diagnostics" })
-
-    -- (t)oggle (i)nlay (h)ints
-    m("n", "<leader>tih", function()
+    -- toggle (i)nlay (h)ints
+    m("n", "<leader>ih", function()
       vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
-    end, { noremap = true, desc = "(t)oggle (i)nlay (h)ints" })
+    end, { noremap = true, desc = "toggle (i)nlay (h)ints" })
 
     -- TODO: (t)oggle (c)ode (l)enses
-
-    -- (e)xplain (d)iagnostics under cursor
-    m("n", "<leader>ed", vim.diagnostic.open_float, { noremap = true, desc = "(e)xplain (d)iagnostics under cursor" })
-
-    -- (q)uick (f)ix
-    m("n", "<leader>qf", vim.diagnostic.setqflist, {
-      noremap = true,
-      desc = "(q)uick (f)ix",
-    })
 
     -- (c)ode (a)ction
     m("n", "<leader>ca", vim.lsp.buf.code_action, {
       noremap = true,
-      desc = "(c)ode (a)ctions available for symbol under cursor",
+      desc = "list (c)ode (a)ctions available for symbol under cursor using LSP",
     })
 
     -- (r)ename (s)ymbol
     m("n", "<leader>rs", vim.lsp.buf.rename, {
       noremap = true,
       desc = "(r)ename (s)ymbol under the cursor and all of its references using LSP",
-    })
-
-    -- (t)oggle (l)anguage (s)erver
-    m("n", "<leader>tls", function()
-      local buf = vim.api.nvim_get_current_buf()
-      local clients = vim.lsp.get_clients({ bufnr = buf })
-      if not vim.tbl_isempty(clients) then
-        vim.cmd("LspStop")
-      else
-        vim.cmd("LspStart")
-      end
-    end, {
-      noremap = false,
-      desc = "(t)oggle (l)anguage (s)erver attached to current buffer",
     })
   end,
 })

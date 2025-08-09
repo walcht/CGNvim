@@ -31,6 +31,16 @@ m("n", "<C-u>", "<C-u>zz")
 m("n", "<leader>rw", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]], { desc = "(r)eplace (w)ord" })
 m("n", "Q", "<nop>") -- disable annoying keys
 m("n", '"', "<nop>") -- disable annoying keys
+m("n", "<leader>vl", function()
+  local new_config = not vim.diagnostic.config().virtual_lines
+  vim.diagnostic.config({ virtual_lines = new_config })
+end, { noremap = true, desc = "toggle (v)irtual (l)ines diagnostics" })
+m("n", "<leader>vt", function()
+  local new_config = not vim.diagnostic.config().virtual_text
+  vim.diagnostic.config({ virtual_text = new_config })
+end, { noremap = true, desc = "toggle (v)irtual (t)ext diagnostics" })
+m("n", "<leader>ed", vim.diagnostic.open_float, { noremap = true, desc = "(e)xplain (d)iagnostics under cursor" })
+m("n", "<leader>qf", vim.diagnostic.setqflist, { noremap = true, desc = "(q)uick (f)ix" })
 
 -----------------------------
 -- VISUAL MODE
@@ -53,8 +63,8 @@ m("x", "<leader>p", '"_dP')
 -----------------------------
 -- MISC MODES
 -----------------------------
-m({ "n", "v", "x" }, "<leader>tr", ":set invrelativenumber<CR>", { desc = "(t)oggle (r)elative line numbering" })
-m({ "n", "v", "x" }, "<leader>ts", ":set spell!<CR>", { desc = "(t)oggle (s)pell" })
+m({ "n", "v", "x" }, "<leader>rl", ":set invrelativenumber<CR>", { desc = "toggle (r)elative (l)ine numbering" })
+m({ "n", "v", "x" }, "<leader>ss", ":set spell!<CR>", { desc = "toggle (s)pell (s)uggestion" })
 m({ "n", "v", "x" }, "<leader>d", '"_d', { desc = "(d)elete to void register (without copying)" })
 m({ "n", "v", "x" }, "<leader>y", '"+y', { desc = "(y)ank to system clipboard" })
 m({ "n", "v", "x" }, "<leader>Y", '"+Y', { desc = "(Y)ank to system clipboard" })

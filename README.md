@@ -1,6 +1,7 @@
 # About
 
-!!WORK IN PROGRESS PROJECT!!
+> [!NOTE]
+> WORK IN PROGRESS PROJECT!
 
 CGNvim is a simple and modern **Neovim >= 0.11** configuration for game and computer
 graphics development environment (e.g., Unity game engine, C++ game development,
@@ -371,8 +372,6 @@ format on write using `:w`, or using `:lua require("conform").format({ async = t
 
 ## TODOs
 
-- [ ] Add general DAP support (CRUCIAL)
-- [ ] Add proper Unity debugging support (CRUCIAL)
 - [ ] Add Godot game engine integration (IMPORTANT)
 - [ ] Add Unreal Engine integration (IMPORTANT)
 - [ ] Support large files (usually JSON files that are too large completely

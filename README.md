@@ -52,10 +52,10 @@ For integration with the Unity game engine see this detailed guide:
 │       │   ├── python.lua
 │       │   ├── ...
 │       │   └── unity.lua
-│       ├── gautocmds.lua       --> set of non-plugin-specific ```vim.api.nvim_create_autocmd``` autocmd calls
+│       ├── gautocmds.lua       --> set of non-plugin-specific autocmd calls
 │       ├── gmappings.lua       --> set of non-plugin-specific mappings
-│       ├── gsettings.lua       --> set of non-buffer-specific settings and options (vim.opt & vim.g)
-│       ├── gusercmds.lua       --> set of non-plugin-specific ```vim.api.nvim_create_user_command``` user commands
+│       ├── gsettings.lua       --> set of non-buffer-specific settings and options
+│       ├── gusercmds.lua       --> set of non-plugin-specific user commands
 │       ├── init.lua            --> bootstraps LazyNvim plugin manager and loads
 │       ├── lspconfig.lua       --> default LSP config + LSPs are enabled/disabled here
 │       ├── lsps                --> LSPs are added/configured here

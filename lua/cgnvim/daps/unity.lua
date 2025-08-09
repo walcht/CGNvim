@@ -3,45 +3,40 @@ Unity Player instance.]]
 
 local dap = require("dap")
 
-dap.adapters.unity = {
-  type = "executable",
-  -- adjust mono path - Unity installations integrate it by default
-  command = "/home/walcht/Unity/Hub/Editor/6000.1.14f1/Editor/Data/MonoBleedingEdge/bin/mono",
-  -- adjust UnityDebug.exe path
-  args = { "/home/walcht/Downloads/unity-debug/extension/bin/UnityDebug.exe" },
-}
+dap.adapters.unity = function(cb, config)
+  -- options passed to unity-debug-adapter.exe
 
--- make sure not to override other C# DAP configs
+  -- when connecting to a running Unity Editor, the TCP address of the listening connection is localhost
+  -- on Linux, use: ss -tlp | grep 'Unity' to find the debugger connection
+  vim.ui.input({ prompt = "address [127.0.0.1]: ", default = "127.0.0.1" }, function(result)
+    config.address = result
+  end)
+  vim.ui.input({ prompt = "port: " }, function(result)
+    config.port = tonumber(result)
+  end)
+  cb({
+    type = "executable",
+    -- adjust mono path - do not use Unity's integrated MonoBleedingEdge
+    command = "mono",
+    -- adjust unity-debug-adapter.exe path
+    args = {
+      -- get Unity debug adapter from: https://github.com/walcht/unity-dap
+      "<path-to-unity-debug-adapter.exe>",
+      -- optional log level argument: trace | debug | info | warn | error | critical | none
+      "--log-level=warn",
+      -- optional path to log file (logs to stderr in case this is not provided)
+      -- "--log-file=<path-to-log-file.txt>",
+    },
+  })
+end
+
+-- make sure not to override other C# DAP configurations
 if dap.configurations.cs == nil then
   dap.configurations.cs = {}
 end
 
--- Tries to find the project root path and returns an absolute path to EditorInstance.json
--- @return string?
-local function try_find_editor_instance_json_path()
-  local path = vim.fn.expand("%:p")
-  while true do
-    local new_path = vim.fn.fnamemodify(path, ":h")
-    if new_path == path then
-      return ""
-    end
-    path = new_path
-    local assets = vim.fn.glob(path .. "/Library")
-    if assets ~= "" then
-      local p = vim.fs.joinpath(path, "Library/EditorInstance.json")
-      return p
-    end
-  end
-end
-
 table.insert(dap.configurations.cs, {
-  name = "Unity Editor",
+  name = "Unity Editor/Player Instance [Mono]",
   type = "unity",
   request = "attach",
-
-  -- options passed to UnityDebug.exe
-
-  path = try_find_editor_instance_json_path,
 })
-
--- { "arguments" = { "adapterID" = "nvim-dap", "clientID" = "neovim", "clientName" = "neovim", "columnsStartAt1" = true, "linesStartAt1" = true, "locale" = "en_US.UTF-8", "pathFormat" = "path", "supportsProgressReporting" = true, "supportsRunInTerminalRequest" = true, "supportsStartDebuggingRequest" = true, "supportsVariableType" = true }, "command" = "initialize", "seq" = 1, "type" = "request" }

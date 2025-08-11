@@ -58,7 +58,6 @@ For integration with the Unity game engine see this detailed guide:
 │       ├── gsettings.lua       --> set of non-buffer-specific settings and options
 │       ├── gusercmds.lua       --> set of non-plugin-specific user commands
 │       ├── init.lua            --> bootstraps LazyNvim plugin manager and loads
-│       ├── lspconfig.lua       --> default LSP config + LSPs are enabled/disabled here
 │       ├── lsps                --> LSPs are added/configured here
 │       │   ├── clangd.lua
 │       │   ├── ...
@@ -279,24 +278,12 @@ successfully been added
 
 ## Adding or Editing LSPs
 
-LSPs are enabled in ```lua/cgnvim/lspconfig.lua``` and their configurations
+LSPs are enabled in ```lua/cgnvim/init.lua``` and their configurations
 live in ```lua/cgnvim/lsps/```.
 
 To add a new LSP, say a LSP for Python files (e.g., ruff):
 
-1. navigate to ```lua/cgnvim/lspconfig.lua``` then add the following 2 lines:
-
-    ```lua
-    -- Python LSP (comment both lines to disable)
-    vim.lsp.config("ruff", require("cgnvim.lsps.ruff"))
-    vim.lsp.enable("ruff")
-    ```
-
-    `vim.lsp.enable("<lsp-name>")` allows you to enable/disable the LSP
-    configuration for `<lsp-name>`. Check `:LspInfo` for active LSPs and enabled
-    configurations.
-
-2. create a new lua file under the path ```lua/cgnvim/lsps/ruff.lua``` and
+1. create a new lua file under the path ```lua/cgnvim/lsps/ruff.lua``` and
 define the LSP client configuration in it as follows (it is usually copied
 from: [nvim-lspconfig/lsps][nvim-lspconfig-lsps]):
 
@@ -309,9 +296,10 @@ from: [nvim-lspconfig/lsps][nvim-lspconfig-lsps]):
         filetypes = { "py" },
         root_markers = { ".git" }
         -- etc ...
+    }
     ```
 
-3. (optionally) for automatic installation and management of your LSP by Mason,
+2. (optionally) for automatic installation and management of your LSP by Mason,
 if it is available in Mason (check command `:Mason`), then navigate to
 `lua/cgnvim/configs/mason-tool-installer.lua`:
 
@@ -323,9 +311,22 @@ if it is available in Mason (check command `:Mason`), then navigate to
     }
     ```
 
-4. restart Neovim and open a file that can trigger the LSP (in this example, 
+3. restart Neovim and open a file that can trigger the LSP (in this example, 
 a Python file). Check `:LspInfo` to see if your LSP configuration is there
 and a LSP client is successfully attached. Check `:LspLog` for LSP logs.
+
+
+# Removing or Disabling LSPs
+
+To remove a LSP, navigate to `lua/cgnvim/lsps/` and remove the
+corresponding LSP entry. Navigate to `lua/cgnvim/configs/mason-tool-installer.lua`
+and remove the plugin from ```ensure_installed``` table in case it is there.
+
+
+To disable a LSP without removing its configuration, navigate to `lua/cgnvim/init.lua`
+then add the lsp name (same as in `lua/cgnvim/lsps` but without the lua extension) to
+the ```lsp_ignore``` table.
+
 
 ## Adding or Editing Formatters
 
@@ -367,7 +368,69 @@ Try  to open a file with the right extension and format it (either by
 format on write using `:w`, or using `:lua require("conform").format({ async = true }))`
 
 
-## Adding or Editing DAPs
+## Adding or Editing DAs
+
+Debug adapters (DA)s are enabled in ```lua/cgnvim/init.lua``` and their configurations
+live in ```lua/cgnvim/daps/```.
+
+To add a new DA, say a DA for javascript/Firefox:
+
+1. install the DA and the debugger (both may reside in the same executable).
+In this case, the debugger is already integrated within Firefox. You just have to
+install the DA (e.g., [vscode-firefox-debug][vscode-firefox-debug]).
+
+2. create a new lua file under the path ```lua/cgnvim/lsps/firefox.lua``` and
+define the DA configuration in it as follows (it is usually copied
+and adjusted from: [nvim-dap configs][nvim-dap-configs]):
+
+    ```lua
+    local dap = require('dap')
+    dap.adapters.firefox = {
+      type = 'executable',
+      command = 'node',  -- command to launch the DA
+      -- path to the DA node package (and other optional args)
+      args = {os.getenv('HOME') .. '/path/to/vscode-firefox-debug/dist/adapter.bundle.js'},
+    }
+
+    -- make sure not to override other typescript DAP configs
+    if dap.configurations.python == nil then
+      dap.configurations.python = {}
+    end
+    
+    -- do NOT overwrite the Language configuration as multiple DAs may add multiple configurations for the same
+    -- ft (e.g., Chrome debug adapter may already have an entry in the table dap.configurations.typescript)
+    table.insert(dap.configurations.typescript, {  
+      -- mandatory options expected by nvim-dap
+      name = 'Debug with Firefox',
+      type = 'firefox',
+      request = 'launch',
+
+      -- options below are debug-adapter specific
+      reAttach = true,
+      url = 'http://localhost:3000',
+      webRoot = '${workspaceFolder}',
+      -- adjust Firefox path accordingly if necessary
+      firefoxExecutable = '/usr/bin/firefox'
+    })
+    ```
+
+3. (optionally) for automatic installation and management of your DA by Mason,
+if it is available in Mason (check command `:Mason`), then navigate to
+`lua/cgnvim/configs/mason-tool-installer.lua`:
+
+    ```lua
+    -- a list of all tools you want to ensure are installed upon start by Mason
+    ensure_installed = {
+      ...,  -- other lsps/formatters/linters
+      { "<your-da-name>", auto_update = true },
+    }
+    ```
+    
+    in the case of vscode-firefox-debug, it is not available in Mason (at least
+    officially) and has to be installed manually.
+
+4. restart Neovim and start debugging a Javascript file. Check the `:DapShowLog`
+command output for any potential issues.
 
 
 ## TODOs
@@ -399,3 +462,5 @@ MIT License. Read `license.txt` file.
 [mason-tool-installer]: https://github.com/WhoIsSethDaniel/mason-tool-installer.nvim
 [gitsigns]: https://github.com/lewis6991/gitsigns.nvim
 [diffview]: https://github.com/sindrets/diffview.nvim
+[nvim-dap-configs]: https://codeberg.org/mfussenegger/nvim-dap/wiki/Debug-Adapter-installation
+[vscode-firefox-debug]: https://github.com/firefox-devtools/vscode-firefox-debug

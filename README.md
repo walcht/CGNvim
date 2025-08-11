@@ -57,7 +57,7 @@ For integration with the Unity game engine see this detailed guide:
 │       ├── gmappings.lua       --> set of non-plugin-specific mappings
 │       ├── gsettings.lua       --> set of non-buffer-specific settings and options
 │       ├── gusercmds.lua       --> set of non-plugin-specific user commands
-│       ├── init.lua            --> bootstraps LazyNvim plugin manager and loads
+│       ├── init.lua            --> lsps setup, daps setups, lazynvim bootstrapping
 │       ├── lsps                --> LSPs are added/configured here
 │       │   ├── clangd.lua
 │       │   ├── ...
@@ -70,15 +70,15 @@ For integration with the Unity game engine see this detailed guide:
 └── stylua.toml                 --> for lua formatting using StyLua
 ```
 
-```lua/cgnvim/plugins/``` and ```lua/cgnvim/configs/``` have a one-to-one
-association where each file in ```lua/cgnvim/plugins/``` denotes a plugin name
+[<u>lua/cgnvim/plugins/</u>](lua/cgnvim/plugins/) and [<u>lua/cgnvim/configs/</u>](lua/cgnvim/configs/) have a one-to-one
+association where each file in [<u>lua/cgnvim/plugins/</u>](lua/cgnvim/plugins/) denotes a plugin name
 (usually `<plugin-name>.lua`) and describes how it should be fetched and loaded
 by the LazeNvim plugin manager. The options passed to its LSP setup are defined
-in a file of similar name in ```lua/cgnvim/configs/```.
+in a file of similar name in [<u>lua/cgnvim/configs/</u>](lua/cgnvim/configs/).
 
-Each entry in ```lua/cgnvim/lsps/``` denotes a specific LSP configuration that
+Each entry in [<u>lua/cgnvim/lsps/</u>](lua/cgnvim/lsps/) denotes a specific LSP configuration that
 is usually copied from [nvim-lspconfig/lsp][nvim-lspconfig-lsps]
-and is loaded and enabled in ```lua/cgnvim/lspconfig.lua```.
+and is loaded and enabled in [<u>lua/cgnvim/lspconfig.lua</u>](lua/cgnvim/lspconfig.lua).
 
 ## Default Keymaps Overview
 
@@ -241,7 +241,7 @@ to ERROR).
 ## Adding or Editing Plugins
 
 Plugins are managed by [lazy.nvim][lazynvim] and are automatically loaded
-from ```lua/cgnvim/plugins/``` where each file corresponds to a plugin.
+from [<u>lua/cgnvim/plugins/</u>](lua/cgnvim/plugins/) where each file corresponds to a plugin.
 
 To add a new plugin:
 
@@ -264,7 +264,7 @@ add the LazyNvim configuration for it. For example:
     ```
 
 2. for a consistent configuration, create a new lua file (with same name as
-in ```lua/cgnvim/plugins/```) at ```lua/cgnvim/configs/<plugin-name>.lua```
+in [<u>lua/cgnvim/plugins/</u>](lua/cgnvim/plugins/)) at ```lua/cgnvim/configs/<plugin-name>.lua```
 and define your plugin setup options there:
 
     ```lua
@@ -278,12 +278,12 @@ successfully been added
 
 ## Adding or Editing LSPs
 
-LSPs are enabled in ```lua/cgnvim/init.lua``` and their configurations
-live in ```lua/cgnvim/lsps/```.
+LSPs are enabled in [<u>lua/cgnvim/init.lua</u>](lua/cgnvim/init.lua) and their configurations
+live in [<u>lua/cgnvim/lsps/</u>](lua/cgnvim/lsps/)
 
 To add a new LSP, say a LSP for Python files (e.g., ruff):
 
-1. create a new lua file under the path ```lua/cgnvim/lsps/ruff.lua``` and
+1. create a new lua file under the path [<u>lua/cgnvim/lsps/ruff.lua</u>](lua/cgnvim/lsps/ruff.lua) and
 define the LSP client configuration in it as follows (it is usually copied
 from: [nvim-lspconfig/lsps][nvim-lspconfig-lsps]):
 
@@ -301,7 +301,7 @@ from: [nvim-lspconfig/lsps][nvim-lspconfig-lsps]):
 
 2. (optionally) for automatic installation and management of your LSP by Mason,
 if it is available in Mason (check command `:Mason`), then navigate to
-`lua/cgnvim/configs/mason-tool-installer.lua`:
+[<u>lua/cgnvim/configs/mason-tool-installer.lua</u>](lua/cgnvim/configs/mason-tool-installer.lua):
 
     ```lua
     -- a list of all tools you want to ensure are installed upon start by Mason
@@ -316,15 +316,15 @@ a Python file). Check `:LspInfo` to see if your LSP configuration is there
 and a LSP client is successfully attached. Check `:LspLog` for LSP logs.
 
 
-# Removing or Disabling LSPs
+## Removing or Disabling LSPs
 
-To remove a LSP, navigate to `lua/cgnvim/lsps/` and remove the
-corresponding LSP entry. Navigate to `lua/cgnvim/configs/mason-tool-installer.lua`
+To remove a LSP, navigate to [<u>lua/cgnvim/lsps/</u>](lua/cgnvim/lsps/) and remove the
+corresponding LSP entry. Navigate to [<u>lua/cgnvim/configs/mason-tool-installer.lua</u>](lua/cgnvim/configs/mason-tool-installer.lua)
 and remove the plugin from ```ensure_installed``` table in case it is there.
 
 
-To disable a LSP without removing its configuration, navigate to `lua/cgnvim/init.lua`
-then add the lsp name (same as in `lua/cgnvim/lsps` but without the lua extension) to
+To disable a LSP without removing its configuration, navigate to [<u>lua/cgnvim/init.lua</u>](lua/cgnvim/init.lua)
+then add the lsp name (same as in [<u>lua/cgnvim/lsps/</u>](lua/cgnvim/lsps/) but without the lua extension) to
 the ```lsp_ignore``` table.
 
 
@@ -336,8 +336,8 @@ installation by [mason.nvim][mason].
 
 To add a new formatter, say a formatter (e.g., `prettierd`) for Javascript files:
 
-1. navigate to `lua/cgnvim/configs/conform.lua` and add the formatter
-to *formatters\_by\_ft*:
+1. navigate to [<u>lua/cgnvim/configs/conform.lua</u>](lua/cgnvim/configs/conform.lua)
+   and add the formatter to `formatters_by_ft`:
 
     ```lua
     -- add new formatters here (also add them in ./mason-tool-installer.lua for automatic installation by Mason)
@@ -350,9 +350,10 @@ to *formatters\_by\_ft*:
     Here we are assuming the command `prettierd` is globally accessible (see next point)
 
 
-2. (optionally) for automatic installation and management of your formatter by
+3. (optionally) for automatic installation and management of your formatter by
 Mason, if it is listed in Mason (check command `:Mason`), then navigate to
-`lua/cgnvim/configs/mason-tool-installer.lua` and add it as an entry in *ensure\_installed*:
+[<u>lua/cgnvim/configs/mason-tool-installer.lua</u>](lua/cgnvim/configs/mason-tool-installer.lua)
+and add it as an entry in `ensure_installed`:
 
     ```lua
     -- a list of all tools you want to ensure are installed upon start by Mason
@@ -362,7 +363,7 @@ Mason, if it is listed in Mason (check command `:Mason`), then navigate to
     }
     ```
 
-3. restart Neovim. Check `:ConformInfo` and see if your formatter is ready. Otherwise
+5. restart Neovim. Check `:ConformInfo` and see if your formatter is ready. Otherwise
 check `:Mason` to see if your formatter is installed.
 Try  to open a file with the right extension and format it (either by
 format on write using `:w`, or using `:lua require("conform").format({ async = true }))`
@@ -370,8 +371,8 @@ format on write using `:w`, or using `:lua require("conform").format({ async = t
 
 ## Adding or Editing DAs
 
-Debug adapters (DA)s are enabled in ```lua/cgnvim/init.lua``` and their configurations
-live in ```lua/cgnvim/daps/```.
+Debug adapters (DA)s are enabled in [<u>lua/cgnvim/init.lua</u>](lua/cgnvim/init.lua) and their configurations
+live in [<u>lua/cgnvim/daps/</u>](lua/cgnvim/daps/).
 
 To add a new DA, say a DA for javascript/Firefox:
 
@@ -416,7 +417,7 @@ and adjusted from: [nvim-dap configs][nvim-dap-configs]):
 
 3. (optionally) for automatic installation and management of your DA by Mason,
 if it is available in Mason (check command `:Mason`), then navigate to
-`lua/cgnvim/configs/mason-tool-installer.lua`:
+[<u>lua/cgnvim/configs/mason-tool-installer.lua</u>](lua/cgnvim/configs/mason-tool-installer.lua)
 
     ```lua
     -- a list of all tools you want to ensure are installed upon start by Mason

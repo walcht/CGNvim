@@ -1,19 +1,14 @@
----@brief
+--- @brief
 ---
 --- from: https://github.com/neovim/nvim-lspconfig/blob/master/lsp/roslyn_ls.lua
 
 local fs = vim.fs
-
 local sln_target = nil
 
 ---@param client vim.lsp.Client
 ---@param target string
 local function on_init_sln(client, target)
-  vim.notify(
-    "Initializing: " .. target,
-    vim.log.levels.INFO,
-    { title = "C# LSP" }
-  )
+  vim.notify("Initializing: " .. target, vim.log.levels.INFO)
   ---@diagnostic disable-next-line: param-type-mismatch
   client:notify("solution/open", {
     solution = vim.uri_from_fname(target),
@@ -23,11 +18,7 @@ end
 ---@param client vim.lsp.Client
 ---@param project_files string[]
 local function on_init_project(client, project_files)
-  vim.notify(
-    "Initializing: projects",
-    vim.log.levels.INFO,
-    { title = "C# LSP", timeout = 10000 }
-  )
+  vim.notify("Initializing: projects", vim.log.levels.INFO)
   ---@diagnostic disable-next-line: param-type-mismatch
   client:notify("project/open", {
     projects = vim.tbl_map(function(file)
@@ -39,11 +30,7 @@ end
 local function roslyn_handlers()
   return {
     ["workspace/projectInitializationComplete"] = function(_, _, ctx)
-      vim.notify(
-        "Roslyn project initialization complete",
-        vim.log.levels.INFO,
-        { title = "C# LSP" }
-      )
+      vim.notify("Roslyn project initialization complete", vim.log.levels.INFO)
 
       local buffers = vim.lsp.get_buffers_by_client_id(ctx.client_id)
       local client = assert(vim.lsp.get_client_by_id(ctx.client_id))
@@ -56,64 +43,40 @@ local function roslyn_handlers()
     ["workspace/_roslyn_projectHasUnresolvedDependencies"] = function()
       if sln_target ~= nil then
         vim.notify(
-          string.format(
-            "Detected missing dependencies. Run `dotnet restore %s` command.",
-            sln_target
-          ),
-          vim.log.levels.ERROR,
-          {
-            title = "C# LSP",
-          }
+          string.format("Detected missing dependencies. Run `dotnet restore %s` command.", sln_target),
+          vim.log.levels.ERROR
         )
         return vim.NIL
       end
-      vim.notify(
-        "Detected missing dependencies. Run `dotnet restore` command.",
-        vim.log.levels.ERROR,
-        {
-          title = "C# LSP",
-        }
-      )
+      vim.notify("Detected missing dependencies. Run `dotnet restore` command.", vim.log.levels.ERROR)
     end,
     ["workspace/_roslyn_projectNeedsRestore"] = function(_, result, ctx)
       local client = assert(vim.lsp.get_client_by_id(ctx.client_id))
 
       ---@diagnostic disable-next-line: param-type-mismatch
-      client:request(
-        "workspace/_roslyn_restore",
-        result,
-        function(err, response)
-          if err then
-            vim.notify(err.message, vim.log.levels.ERROR, { title = "C# LSP" })
-          end
-          if response then
-            local log_lvl = vim.log.levels.INFO
-            local t = {}
-            for _, v in ipairs(response) do
-              t[#t + 1] = v.message
-              -- an error could be reported in the message string, if found then
-              -- change the log level accordingly
-              if string.find(v.message, "error%s*MSB%d%d%d%d") then
-                log_lvl = vim.log.levels.WARN
-              end
-            end
-            vim.notify(
-              table.concat(t, "\n"),
-              log_lvl,
-              { title = "C# LSP ['workspace/_roslyn_restore'] response" }
-            )
-          end
+      client:request("workspace/_roslyn_restore", result, function(err, response)
+        if err then
+          vim.notify(err.message, vim.log.levels.ERROR)
         end
-      )
+        if response then
+          local log_lvl = vim.log.levels.INFO
+          local t = {}
+          for _, v in ipairs(response) do
+            t[#t + 1] = v.message
+            -- an error could be reported in the message string, if found then
+            -- change the log level accordingly
+            if string.find(v.message, "error%s*MSB%d%d%d%d") then
+              log_lvl = vim.log.levels.WARN
+            end
+          end
+          vim.notify(table.concat(t, "\n"), log_lvl)
+        end
+      end)
 
       return vim.NIL
     end,
     ["razor/provideDynamicFileInfo"] = function(_, _, _)
-      vim.notify(
-        "Razor is not supported.\nPlease use https://github.com/tris203/rzls.nvim",
-        vim.log.levels.WARN,
-        { title = "C# LSP" }
-      )
+      vim.notify("Razor is not supported.\nPlease use https://github.com/tris203/rzls.nvim", vim.log.levels.WARN)
     end,
   }
 end
@@ -152,9 +115,7 @@ return {
       if root_dir then
         cb(root_dir)
       else
-        print(
-          "[C# LSP] failed to find root directory - LSP support is disabled"
-        )
+        vim.notify("[C# LSP] failed to find root directory - LSP support is disabled", vim.log.levels.ERROR)
       end
     end
   end,
@@ -171,7 +132,7 @@ return {
         end
       end
 
-      -- if no solution is found load project
+      -- if no solution is found then load project
       local project_found = false
       for entry, type in fs.dir(root_dir) do
         if type == "file" and vim.endswith(entry, ".csproj") then
@@ -181,7 +142,7 @@ return {
       end
 
       if not project_found then
-        print("[C# LSP] no solution/.csproj files were found")
+        vim.notify("[C# LSP] no solution/.csproj files were found", vim.log.levels.ERROR)
       end
     end,
   },

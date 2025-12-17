@@ -15,7 +15,7 @@ vim.opt.scrolloff = 10
 vim.opt.sidescrolloff = 12
 vim.opt.signcolumn = "yes"
 -- uncomment for sign columns
--- vim.opt.colorcolumn = "80,120"
+vim.opt.colorcolumn = "80,120"
 vim.opt.spell = false
 -- disable netrw
 vim.g.loaded_netrw = 1

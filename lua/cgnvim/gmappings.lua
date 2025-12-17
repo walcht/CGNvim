@@ -68,3 +68,4 @@ m({ "n", "v", "x" }, "<leader>ss", ":set spell!<CR>", { desc = "toggle (s)pell (
 m({ "n", "v", "x" }, "<leader>d", '"_d', { desc = "(d)elete to void register (without copying)" })
 m({ "n", "v", "x" }, "<leader>y", '"+y', { desc = "(y)ank to system clipboard" })
 m({ "n", "v", "x" }, "<leader>Y", '"+Y', { desc = "(Y)ank to system clipboard" })
+m({ "n" }, "<leader>ng", ":Neogen<CR>", { desc = "(g)enerate documentation" })

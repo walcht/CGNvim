@@ -7,6 +7,8 @@ on:
       - master
     tags:
       - '*'
+    paths:
+      - 'CHEATSHEET.md'
 
 jobs:
   build-cheatsheet-pdf:

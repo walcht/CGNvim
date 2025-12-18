@@ -20,6 +20,7 @@ jobs:
       run: |
         sudo apt-get install texlive-latex-recommended
         sudo apt-get install texlive-fonts-extra
+        sudo apt-get install texlive-lang-greek
         wget https://github.com/jgm/pandoc/releases/download/3.8.3/pandoc-3.8.3-1-amd64.deb
         sudo dpkg -i pandoc-3.8.3-1-amd64.deb
 

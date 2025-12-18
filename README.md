@@ -1,11 +1,12 @@
 # About
 
-> [!NOTE]
-> WORK IN PROGRESS PROJECT!
+**CGNvim** is a simple and modern **Neovim >= 0.11** configuration for game and
+computer graphics development environment (e.g., Unity game engine or C++ game
+development/graphics, development using low-level graphics API).
 
-CGNvim is a simple and modern **Neovim >= 0.11** configuration for game and computer
-graphics development environment (e.g., Unity game engine, C++ game development,
-development using low-level graphics API etc.).
+Since this configuration is highly modular, you can simply see how certain
+functionalities are done (e.g., Roslyn LS C# LSP) and simply copy and integrate
+their config into you own Neovim config.
 
 ## Features
 
@@ -82,126 +83,9 @@ and is loaded and enabled in [<u>lua/cgnvim/lspconfig.lua</u>](lua/cgnvim/lspcon
 
 ## Default Keymaps Overview
 
-To list all the defined and default keymaps, enter the command `:map`
-(or for a *better* output `:Telescope keymaps `). CGNvim tries to simplify
-the memorization of keymaps by relying on mnemonics.
-
-The main keymaps that contribute the most at simplifying the usual workflow are
-listed below (`<leader>` is `<Space>` unless the default configuration is changed).
-
-### General Keymaps
-
-| Keymap            | Mode    | Short Description                         | Detailed Description                                                                                                                                                                                                         |
-| ----------------- |-------- | ----------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `<leader>tt`      | n       | (t)oggle (t)erminal                       | toggle the integrated terminal                                                                                                                                                                                               |
-| `<leader>ex`      | n       | toggle file (ex)plorer                    | toggle the NvimTree file explorer                                                                                                                                                                                            |
-| `<leader>rw`      | n       | (r)ename (w)ord                           | rename all occurences of the word under cursor in current buffer                                                                                                                                                             |    
-| `<leader>ts`      | n,v,x   | (t)oggle (s)pell                          | toggle spell checking for current buffer                                                                                                                                                                                     |    
-| `<leader>ss`      | n       | (s)pell (s)uggest                         | show Telescope's spell suggestion for the word under the cursor                                                                                                                                                              |
-| `<leader>tr`      | n,v,x   | (t)oggle (r)elative line numbering        | toggle relative line numbering (default: off)                                                                                                                                                                                |
-| `<leader>d`       | n,v,x   | (d)elete to void register                 | (d)elete to void register (without copying). Vim's default delete overwrites the content of the register                                                                                                                     |
-| `<leader>y`       | n,v,x   | (y)ank to system clipboard                | copy (yank) to system clipboard. Might require an external package for support on Wayland                                                                                                                                    |
-| `J`               | x       | move selected line(s) down(J)             |                                                                                                                                                                                                                              |
-| `K`               | x       | move selected line(s) up(K)               |                                                                                                                                                                                                                              |
-| `J`               | n       | append line below to current line         |                                                                                                                                                                                                                              |
-
-### Window Navigation and Resizing Keymaps
-
-| Keymap            | Mode    | Short Description                         |
-| ----------------- | ------- | ----------------------------------------- |
-| `<C-h>`           | n       | move to left(h) window                    |
-| `<C-j>`           | n       | move to down(j) window                    |
-| `<C-k>`           | n       | move to up(k) window                      |
-| `<C-l>`           | n       | move to right(l) window                   |
-| `<C-Up>`          | n       | resize window size (Up)wards              |
-| `<C-Down>`        | n       | resize window size (Down)wards            |
-| `<C-Left>`        | n       | resize window size (Left)wards            |
-| `<C-Right>`       | n       | resize window size (Right)wards           |
-| `<S-l>`           | n       | navigate to right(l) buffer               |
-| `<S-h>`           | n       | navigate to left(h) buffer                |
-
-### File Explorer Keymaps
-
-Only keymaps that are *considered* important are listed
-
-| Keymap            | Mode    | Short Description                         |
-| ----------------- | ------- | ----------------------------------------- |
-| `g?`              | n       | (g)o to help(?) window to show keymaps    |
-| `v<CR>`           | n       | open(<CR>) (v)ertically                   |
-| `a`               | n       | (a)ppend/create file/folder               |
-| `y`               | n       | (y)ank basename to system clipboard       |
-| `Y`               | n       | (Y)ank file/directory absolute path       |
-| `c`               | n       | copy file (c)ontent                       |
-| `d`               | n       | (d)elete file/directory                   |
-| `r`               | n       | (r)ename file/directory                   |
-| `Tab`             | n       | preview file/expand directory             |
-| `K`               | n       | show file metadata info                   |
-| `.`               | n       | run command on current(.) entry           |
-| `<leader>tg`      | n       | (t)oggle (g)itignore filter               |
-| `<leader>td`      | n       | ((t)oggle (d)otfiles filter               |
-
-
-### Formatting Keymaps
-
-| Keymap            | Mode    | Short Description                         | Detailed Description                                                                                                                                                                                                         |
-| ----------------- | ------- | ----------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `fb`              | n       | (f)ormat (b)uffer                         | format current buffer according to [conform.nvim][conform] config                                                                                                                                                            |
-| `<C-I>`           | n       | same as `fb`                              | VSCode formatting shortcut                                                                                                                                                                                                   |
-
-### Git Keymaps
-
-| Keymap            | Short Description                         | Detailed Description                                                                                                                                                                                                         |
-| ----------------- | ----------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `<leader>gsb`     | (g)it (s)tage (b)uffer                    | stage the whole current buffer                                                                                                                                                                                               |
-| `<leader>grb`     | (g)it (r)eset (b)uffer                    | reset the whole current buffer                                                                                                                                                                                               |
-| `<leader>gph`     | (g)it (p)review (h)unk                    | highlight hunk under cursor if a hunk is present                                                                                                                                                                             |
-| `<leader>gsh`     | (g)it (s)tage (h)unk                      | stage hunk under cursor if a hunk is present                                                                                                                                                                                 |
-| `<leader>grh`     | (g)it (r)eset (h)unk                      | reset hunk under cursor if a hunk is present                                                                                                                                                                                 |
-| `]h`              | next (h)unk ([ on the right)              | navigate to next hunk                                                                                                                                                                                                        | 
-| `[h`              | prev (h)unk ([ on the left)               | navigate to previous hunk                                                                                                                                                                                                    | 
-| `<leader>gdv`     | (g)it (d)iff (v)iew                       | show git diff view for current buffer                                                                                                                                                                                        |
-| `<leader>gtb`     | (g)it (t)oggle (b)lame                    | toggle git blame for current line under cursor                                                                                                                                                                               |
-
-### Diagnostics Keymaps
-
-| Keymap            | Short Description                         | Detailed Description                                                                                                                                                                                                         |
-| ----------------- | ----------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `]d`              | next(]) (d)iagnostics                     | navigate to next diagnostics                                                                                                                                                                                                 |
-| `[d`              | prev([) (d)iagnostics                     | navigate to previous diagnostics                                                                                                                                                                                             |
-| `<leader>vt`      | toggle (v)irtual (t)ext diagnostics       | toggle virtual text diagnostics. Shows diagnostics at the right of the corresponding line using virtual text                                                                                                                 |
-| `<leader>vl`      | toggle (v)irtual (l)ines diagnostics      | toggle virtual lines diagnostics. Uses multiple virtual lines under the corresponding line to show diagnostics. Better than virtual text diagnostics but consumes more visual space (i.e., adds a lot of lines on hover).    |
-| `<leader>ed`      | (e)xplain (d)iagnostics                   | explain diagnostics under cursor                                                                                                                                                                                             |
-| `<leader>ql`      | (q)uickfix (l)ist                         | toggles the quickfix list window                                                                                                                                                                                             |
-| `<leader>bd`      | (b)uffer (d)iagnostics                    | toggle Trouble's buffer (local) diagnostics window                                                                                                                                                                           |
-| `<leader>gd`      | (g)lobal (d)iagnostics                    | toggle Trouble's global diagnostics window                                                                                                                                                                                   |
-
-### LSP Keymaps
-
-| Keymap            | Short Description                         | Detailed Description                                                                                                                                                                                                         |
-| ----------------- | ----------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `K`               | show LSP (K)ownledge                      | LSP hover information about symbol under cursor                                                                                                                                                                              |
-| `KK`              | (K)indly jump to LSP (K)ownledge          | jumps to LSP hover information window about symbol under cursor                                                                                                                                                              |
-| `gd`              | (g)o (d)efinition                         | go to the definition of the symbol under cursor                                                                                                                                                                              |
-| `gi`              | (g)o (i)mplementation                     | go to the implmentation of the symbol under cursor                                                                                                                                                                           |
-| `gD`              | (g)o (D)eclaration                        | go to the declaration of the symbol under cursor                                                                                                                                                                             |
-| `gr`              | (g)o (r)eferences                         | go to the references of symbol under cursor                                                                                                                                                                                  |
-| `<leader>ih`      | (i)nlay (h)ints                           | toggle LSP inlay hints. E.g., uses virtual text to show parameter names)                                                                                                                                                     |
-| `<leader>ca`      | (c)ode (a)ction                           | list code actions available for symbol under cursor                                                                                                                                                                          |
-| `<leader>rs`      | (r)ename (s)ymbol                         | rename symbol under the cursor and all of its references using LSP                                                                                                                                                           |
-
-### Debugging Keymaps
-
-| Keymap            | Short Description                         | 
-| ----------------- | ----------------------------------------- |
-| `<leader>dc`      | (d)ebugger (c)ontinue/start               |
-| `<leader>db`      | (d)ebugger toggle (b)reakpoint            |
-| `<leader>do`      | (d)ebugger step (o)ver                    |
-| `<leader>di`      | (d)ebugger step (i)nto                    |
-| `<leader>dO`      | (d)ebugger step (O)ut                     |
-| `F5`              | same as `<leader>dc`                      |
-| `F10`             | same as `<leader>do`                      |
-| `F11`             | same as `<leader>di`                      |
-| `F12`             | same as `<leader>dO`                      |
+Most commently used keymaps are listed in a cheatsheet that is automatically
+updated in the [releases page][]. Maybe print it out (using a laser printer ;-))
+and keep it nearby (that's what I do - because I constantly forget keymaps).
 
 ## Potential LSP Issues
 
@@ -436,8 +320,6 @@ command output for any potential issues.
 
 ## TODOs
 
-- [ ] Add Godot game engine integration (IMPORTANT)
-- [ ] Add Unreal Engine integration (IMPORTANT)
 - [ ] Support large files (usually JSON files that are too large completely
 crash Neovim because of treesitter and/or LSP)
     - [ ] Disable Treesitter for large files (e.g., >= 128KBs)
@@ -465,3 +347,4 @@ MIT License. Read `license.txt` file.
 [diffview]: https://github.com/sindrets/diffview.nvim
 [nvim-dap-configs]: https://codeberg.org/mfussenegger/nvim-dap/wiki/Debug-Adapter-installation
 [vscode-firefox-debug]: https://github.com/firefox-devtools/vscode-firefox-debug
+[nvim-dap]: https://github.com/mfussenegger/nvim-dap

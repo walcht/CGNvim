@@ -5,8 +5,8 @@ on:
   push:
     branches:
       - master
-    paths:
-      - 'CHEATSHEET.md'
+    tags:
+      - '*'
 
 jobs:
   build-cheatsheet-pdf:
@@ -29,6 +29,7 @@ jobs:
         pandoc CHEATSHEET.md -o CHEATSHEET.pdf
 
     - name: create release page and upload artifact
+      if: github.ref_type == 'tag'
       uses: softprops/action-gh-release@v2
       with:
         files: |

@@ -84,8 +84,10 @@ and is loaded and enabled in [<u>lua/cgnvim/lspconfig.lua</u>](lua/cgnvim/lspcon
 ## Default Keymaps Overview
 
 Most commently used keymaps are listed in a cheatsheet that is automatically
-updated in the [releases page][]. Maybe print it out (using a laser printer ;-))
+updated in the [releases page][releases-page]. Maybe print it out (using a laser printer ;-))
 and keep it nearby (that's what I do - because I constantly forget keymaps).
+
+![cgnvim-cheatsheet](https://github.com/user-attachments/assets/3f8291ec-b9e1-4ebb-ad72-0766b757af8a)
 
 ## Potential LSP Issues
 
@@ -324,8 +326,6 @@ command output for any potential issues.
 crash Neovim because of treesitter and/or LSP)
     - [ ] Disable Treesitter for large files (e.g., >= 128KBs)
     - [ ] Disable LSP for large files (e.g., 32KBs)
-- [ ] Add script for the generation of single-page PDF overview of keymaps
-(IMPORTANT)
 - [ ] Add Yaml highlighting and formatting support (IMPORTANT)
 - [ ] Add snippets completion (OPTIONAL)
 - [ ] Add a minimal spell checker (OPTIONAL)
@@ -348,3 +348,4 @@ MIT License. Read `license.txt` file.
 [nvim-dap-configs]: https://codeberg.org/mfussenegger/nvim-dap/wiki/Debug-Adapter-installation
 [vscode-firefox-debug]: https://github.com/firefox-devtools/vscode-firefox-debug
 [nvim-dap]: https://github.com/mfussenegger/nvim-dap
+[releases-page]: https://github.com/walcht/CGNvim/releases

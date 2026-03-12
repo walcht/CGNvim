@@ -2,27 +2,42 @@ local dap = require("dap")
 
 --- @return string|nil
 local function get_python_path()
+  -- always prioritize python from venv
   local cwd = vim.fn.getcwd()
   if vim.fn.executable(cwd .. "/venv/bin/python") == 1 then
     return cwd .. "/venv/bin/python"
   elseif vim.fn.executable(cwd .. "/.venv/bin/python") == 1 then
     return cwd .. "/.venv/bin/python"
-  elseif vim.fn.executable("python3") == 1 then
-    return "python3"
-  elseif vim.fn.executable("/usr/bin/python3") == 1 then
-    return "/usr/bin/python3"
-  else
-    --- @type string
-    local chosen_path
-    vim.ui.input({ prompt = "provide absolute path to Python (to run debugpy): " }, function(result)
-      chosen_path = result
-    end)
-    if vim.fn.executable(chosen_path) then
-      return chosen_path
-    else
-      vim.notify("you have provided an invalid Python path", vim.log.levels.ERROR)
-      return nil
+  end
+
+  -- if not in venv, then use (if available) globally installed python3(.exe)
+  if vim.fn.has("win64") == 1 then
+    -- on Windows, vim.fn.executable("python3") returns 0 even if it is in PATH
+    if vim.fn.executable("python") == 1 then
+      return "python"
     end
+  else -- linux, macos
+    if vim.fn.executable("python3") == 1 then
+      return "python3"
+    elseif vim.fn.executable("/usr/bin/python3") == 1 then
+      return "/usr/bin/python3"
+    end
+  end
+
+  -- otherwise prompt the user for python3 executable path
+  --- @type string
+  local chosen_path
+  vim.ui.input(
+    { prompt = "provide absolute path to Python (to run debugpy): " },
+    function(result)
+      chosen_path = result
+    end
+  )
+  if vim.fn.executable(chosen_path) == 1 then
+    return chosen_path
+  else
+    vim.notify("you have provided an invalid Python path", vim.log.levels.ERROR)
+    return nil
   end
 end
 

@@ -59,7 +59,10 @@ for _, source in ipairs({
 }) do
   local status_ok, error_object = pcall(require, source)
   if not status_ok then
-    vim.notify("failed to load: " .. source .. "\n\n" .. error_object, vim.log.levels.ERROR)
+    vim.notify(
+      "failed to load: " .. source .. "\n\n" .. error_object,
+      vim.log.levels.ERROR
+    )
   end
 end
 
@@ -71,7 +74,9 @@ vim.lsp.config("*", {
   capabilities = require("cmp_nvim_lsp").default_capabilities(),
   root_markers = { ".git" },
   on_error = function(code, err)
-    vim.notify(vim.lsp.rpc.client_errors[code] .. err, vim.log.levels.ERROR)
+    local err_msg = vim.lsp.rpc.client_errors[code] .. err
+    vim.lsp.log.error(err_msg)
+    vim.notify(err_msg, vim.log.levels.ERROR)
   end,
 })
 -- enable virtual lines and disable virtual text diagnostics
@@ -95,7 +100,10 @@ for lsp_name, _ in vim.fs.dir(p) do
     end
   end)
   if not status_ok then
-    vim.notify("failed to load LSP: " .. lsp_name .. "\n\n" .. "Reason: " .. error_object, vim.log.levels.ERROR)
+    vim.notify(
+      "failed to load LSP: " .. lsp_name .. "\n\n" .. "Reason: " .. error_object,
+      vim.log.levels.ERROR
+    )
   end
 end
 
@@ -103,9 +111,15 @@ end
 -- DAPs INITIALIZATION
 -----------------------------
 -- load DAPs defined in ./daps/ folder
-for da, _ in vim.fs.dir(vim.fs.joinpath(vim.fn.stdpath("config"), "lua", "cgnvim", "daps")) do
-  local status_ok, error_object = pcall(require, "cgnvim.daps." .. da:gsub("%.lua", ""))
+for da, _ in
+  vim.fs.dir(vim.fs.joinpath(vim.fn.stdpath("config"), "lua", "cgnvim", "daps"))
+do
+  local status_ok, error_object =
+    pcall(require, "cgnvim.daps." .. da:gsub("%.lua", ""))
   if not status_ok then
-    vim.notify("failed to load DAP: " .. da .. "\n\n" .. "Reason: " .. error_object, vim.log.levels.ERROR)
+    vim.notify(
+      "failed to load DAP: " .. da .. "\n\n" .. "Reason: " .. error_object,
+      vim.log.levels.ERROR
+    )
   end
 end

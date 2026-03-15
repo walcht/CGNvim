@@ -1,7 +1,7 @@
 return {
   progress = {
     display = {
-      done_ttl = 10,
+      done_ttl = 20,
     },
   },
   -- Options related to notification subsystem

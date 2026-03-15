@@ -11,3 +11,9 @@ vim.api.nvim_create_user_command(
   ":checkhealth vim.lsp",
   { desc = "LSP information (alias to :checkhealth vim.lsp)" }
 )
+
+vim.api.nvim_create_user_command("LspClearLog", function()
+  io.open(vim.lsp.log.get_filename(), "w"):close()
+end, {
+  desc = "Clears the LSP log.",
+})

@@ -3,9 +3,9 @@ plugin - hence the g in this file's name)]]
 
 local m = vim.keymap.set
 
------------------------------
+--------------------------------------------------------------------------------
 -- NVIM-TREE
------------------------------
+--------------------------------------------------------------------------------
 -- Open nvim-tree on directory or no-name buffer
 vim.api.nvim_create_autocmd({ "VimEnter" }, {
   callback = function(args)
@@ -22,9 +22,9 @@ vim.api.nvim_create_autocmd({ "VimEnter" }, {
   end,
 })
 
------------------------------
+--------------------------------------------------------------------------------
 -- LSP
------------------------------
+--------------------------------------------------------------------------------
 vim.api.nvim_create_autocmd({ "LspAttach" }, {
   callback = function(args)
     local _ = vim.lsp.get_client_by_id(args.data.client_id)
@@ -85,7 +85,7 @@ vim.api.nvim_create_autocmd({ "LspAttach" }, {
 })
 
 -------------------------------------------------------------------------------
---------------------------------- ToggleTerm ----------------------------------
+-- ToggleTerm
 -------------------------------------------------------------------------------
 
 vim.api.nvim_create_autocmd({ "TermOpen" }, {

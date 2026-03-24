@@ -29,7 +29,10 @@ local function try_get_unity_editor_ip_port()
   -- we are looking for a line like this:
   -- Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56183
   for l in io.lines(editor_log_fp) do
-    local _ip, _port = string.match(l, "^Using monoOptions.*address=(%d+%.%d+%.%d+%.%d+):(%d%d%d%d%d)")
+    local _ip, _port = string.match(
+      l,
+      "^Using monoOptions.*address=(%d+%.%d+%.%d+%.%d+):(%d%d%d%d%d)"
+    )
     if _ip ~= nil and _port ~= nil then
       ip = _ip
       port = _port
@@ -60,9 +63,12 @@ dap.adapters.unity = function(cb, config)
 
   -- when connecting to a running Unity Editor, the TCP address of the listening connection is
   -- usually localhost (i.e., 127.0.0.1)
-  vim.ui.input({ prompt = "address [127.0.0.1]: ", default = "127.0.0.1" }, function(result)
-    config.address = result
-  end)
+  vim.ui.input(
+    { prompt = "address [127.0.0.1]: ", default = "127.0.0.1" },
+    function(result)
+      config.address = result
+    end
+  )
 
   vim.ui.input({ prompt = "port [56---]: " }, function(result)
     config.port = tonumber(result)
@@ -76,22 +82,28 @@ if dap.configurations.cs == nil then
   dap.configurations.cs = {}
 end
 
-table.insert(dap.configurations.cs, {
-  name = "Automatically connect to Unity Editor instance",
-  type = "unity",
-  request = "attach",
-  address = function()
-    local ip, _ = try_get_unity_editor_ip_port()
-    return ip
-  end,
-  port = function()
-    local _, port = try_get_unity_editor_ip_port()
-    return port
-  end,
-})
-
-table.insert(dap.configurations.cs, {
-  name = "Manually enter IP:PORT for Unity Editor/Player instance [Mono]",
-  type = "unity",
-  request = "attach",
-})
+dap.providers.configs["unity_editor_config"] = function()
+  local configs = {}
+  local ip, port = try_get_unity_editor_ip_port()
+  if ip and port then
+    table.insert(configs, {
+      name = string.format(
+        "Connect to Unity Editor instance at %s:%s",
+        ip,
+        port
+      ),
+      type = "unity",
+      -- the debuggee is Unity which is not our responsibility to launch
+      -- (i.e., it should already be running and we should just attach to it)
+      request = "attach",
+      address = ip,
+      port = port,
+    })
+  end
+  table.insert(configs, {
+    name = "Manually enter IP:PORT for Unity Editor/Player instance [Mono]",
+    type = "unity",
+    request = "attach",
+  })
+  return configs
+end
